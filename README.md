@@ -62,8 +62,13 @@ the skeleton:
 
 ```js
 fetch("string representing a URL to a data source")
-  .then(response => response.json())
-  .then(json => ...)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(json){
+    // Use this data inside of `json` to do DOM manipulation
+  })
+```
 
 Let's add some in-line JavaScript contents to help us track what's going on.
 Since JavaScript doesn't care about comments or whitespace, we're going to add
@@ -119,17 +124,44 @@ JSON ("jay-sawn"). Programmers find it very easy to think about JavaScript
 `Object`s, so they often send their "stringified" version as responses.
 
 The `then()` takes a function. Here is where you tell JavaScript to ask the
-network response to be turned into JSON.  When starting out, this first
-`then()` will pretty much be the same across all your uses of `fetch()`.
+network response to be turned into JSON.  When you first start using `fetch()`
+most of your first `then()`s are going to look like this:
+
+```js
+function(response) {
+  return response.json();
+}
+```
 
 The final `then()` is when you actually get some JSON passed in. You can then
-do something with the JSON. The easiest thing is to `console.log()` the JSON
-_or_ to hand the JSON off to another function.
+do something with the JSON. The easiest options are
+
+* `alert()` the JSON
+* `console.log()` the JSON
+* hand the JSON off to another function.
+
+We'll go for the `console.log()` approach:
+
+```js
+function(json) {
+  console.log(json)
+}
+```
+
+> **STRETCH:** But you _should_ be able to imagine that you could do some DOM
+> manipulation instead.
+
+Here's a completed example:
 
 ```js
 fetch('http://api.open-notify.org/astros.json')
-  .then(response => response.json())
-  .then(json => console.log(json));
+.then(function(response) {
+    return response.json();
+    })
+.then(function(json) {
+    console.log(json)
+    });
+
 ```
 
 ![kimmy wow](http://i.giphy.com/3osxYwZm9WZwnt1Zja.gif)
@@ -138,7 +170,7 @@ Let's perform a trivial demonstration. Open up a new **incognito** tab in
 Chrome. Open up DevTools and paste the following:
 
 ```js
-fetch('http://api.open-notify.org/astros.json').then(response => response.json()).then(json => document.write(`Holy cow! There are ${json["number"]} humans in space.`));
+fetch('http://api.open-notify.org/astros.json').then(function(response) { return response.json(); }).then(function(json) { console.log(json) });
 ```
 
 ![Simple fetch()](https://curriculum-content.s3.amazonaws.com/skills-front-end-web-development/js-async-fetch-readme/simple_fetch_incog_window.png)
