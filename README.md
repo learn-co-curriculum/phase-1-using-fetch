@@ -39,15 +39,14 @@ AJAX relies on several technologies:
 * [asynchronous Input / Output][asyncIO]
 * [the event loop][el]
 
-We're going to gloss over all these pieces in this lesson. By doing so, we can
-_see_ how the JavaScript `fetch()` function works, and experience the AJAX
-technique.
-
-> **STRETCH**: If you were to apply for a software developer position, you
-> would be expected to understand each of the "glossed over" elements. This
-> course will provide additional material to introduce you to the key
-> technology. If, on the other hand, you're not seeking that deeper technical
-> understanding, this introduction should be enough.
+Part of what makes AJAX complicated to learn is that to understand it
+_thoroughly_, you need to understand _all_ these components. For the moment,
+however, we're going to gloss over all these pieces in this lesson. It just so
+happens that modern browsers have _abstracte_ all those components into a
+single function called `fetch()`. While someone interviewing to be a front-end
+developer will be expected to be able to explain all those components above
+(which we _will_ cover later), while we're getting a hang of things, we're
+going to simplify our task by using `fetch()`.
 
 Let's learn to use `fetch()` to apply the AJAX technique: a way to load
 additional data _after_ information is presented to the user.
@@ -113,7 +112,9 @@ DevTools console. We'll cover that later.
 As you can see, `fetch()` provides us with a short way to fetch and work with
 resources. However, `fetch()` has only recently arrived in browsers. In older
 code you might see `jquery.ajax` or `$.ajax` or an object called an
-`XMLHttpRequestObject`.
+`XMLHttpRequestObject`. These are distractions at this point in your education.
+After working with `fetch()` you'll be able to more easily integrate these
+special topics.
 
 ## Identify Examples of the AJAX Technique on Popular Websites
 
