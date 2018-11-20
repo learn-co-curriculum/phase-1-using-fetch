@@ -9,21 +9,27 @@
 ## Introduction
 
 When it comes to making engaging web sites, we often find ourselves needing to
-send a lot of data (text, images, media, etc.). But sending a **huge** amount
-of data when you first land on a page puts a huge burden on the user's
-computer. The user's computer has to build the DOM and integrate all those
-pieces, retrieving and stitching them together. Users experience this process as
-slowness and too much of it means they'll click away and never come back.
+send a lot of data (text, images, media, etc.) so that the page is exciting.
 
-Web users expect sites to load quickly **and** to stay updated. Research shows
-that 40 percent of visitors to a website will leave if the site takes more than
-3 seconds to load. Mobile users are even _less_ patient.
+**But** browsers won't show anything until they've processed all the of that
+data. As a result, they show nothing. The screen stays blank and users
+experience "waiting."
 
-We deliver sites that keep users engaged by using a technique called
-***AJAX***. In AJAX we:
+![Spanky waits](https://media.giphy.com/media/tXL4FHPSnVJ0A/giphy.gif)
 
-1. Deliver an initial, engaging page using HTML and CSS
-2. Use JavaScript to add more to the DOM, behind the scenes
+Too much waiting means visitors will click away and never come back. Web users
+expect sites to load quickly **and** to stay updated. Research shows that 40
+percent of visitors to a website will leave if the site takes more than 3
+seconds to load. Mobile users are even _less_ patient.
+
+To solve this problem and help provide lots of other really great features, we
+developed a technique called **_AJAX_**.
+
+In AJAX we:
+
+1. Deliver an initial, engaging page using HTML and CSS which browsers render
+   _quickly_
+2. _Then_ we use JavaScript to add more to the DOM, behind the scenes
 
 AJAX relies on several technologies:
 
