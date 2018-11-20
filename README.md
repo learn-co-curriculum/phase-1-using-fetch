@@ -54,7 +54,7 @@ additional data _after_ information is presented to the user.
 ## Explain How to Fetch Data with `fetch()`
 
 The `fetch()` function retrieves data. It's a global _method_ on the `window`
-object. That means you can simply use it with `fetch()`.
+object. That means you can simply use it with `fetch()` in DevTools.
 
 Here's the skeleton for using it:
 
