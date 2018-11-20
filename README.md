@@ -42,7 +42,7 @@ AJAX relies on several technologies:
 Part of what makes AJAX complicated to learn is that to understand it
 _thoroughly_, you need to understand _all_ these components. For the moment,
 however, we're going to gloss over all these pieces in this lesson. It just so
-happens that modern browsers have _abstracte_ all those components into a
+happens that modern browsers have _abstracted_ all those components into a
 single function called `fetch()`. While someone interviewing to be a front-end
 developer will be expected to be able to explain all those components above
 (which we _will_ cover later), while we're getting a hang of things, we're
