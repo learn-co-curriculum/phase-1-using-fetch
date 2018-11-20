@@ -35,7 +35,7 @@ AJAX relies on several technologies:
 
 * Things called `Promise`s
 * Things called `XMLHttpRequestObject`s
-* A [serialization format][sf] called JSON
+* A [serialization format][sf] called JSON for "JavaScript Object Notation"
 * [asynchronous Input / Output][asyncIO]
 * [the event loop][el]
 
@@ -65,26 +65,20 @@ fetch("string representing a URL to a data source")
   .then(json => ...)
 ```
 
-The first thing you need is a `String` that represents a URL that can provide
-you some data. As it happens, http://api.open-notify.org/astros.json will
-provide a list of the humans in space. You can paste this URL into a browser
-tab and see that this URL returns a JSON structure. You provide this string as
-the first argument to `fetch()`.
+### Filling Out the Example
 
-You will want to _chain_ a call to `then()` at the end of `fetch()`.
+Let's fill out our base skeleton.
 
-> **REMEMBER**: Since JavaScript doesn't care about whitespace
-> 
-> ```js
-> fetch("string representing a URL to a data source").then(response => response.json());
-> ```
-> 
-> is the same as:
-> 
-> ```js
-> fetch("string representing a URL to a data source")
->   .then(response => response.json());
-> ```
+First, we'll provide a `String` argument to `fetch()`.  As it happens,
+`http://api.open-notify.org/astros.json` will provide a list of the humans in
+space. You can paste this URL into a browser tab and see that this URL returns
+a JSON structure.
+
+JSON is a way to send a collection of data across in the internet. It just so
+happens that this `String` is written in a way that would be valid JavaScript
+syntax for an `Object` instance. Thus the name "JavaScript Object" notation or,
+JSON ("jay-sawn"). Programmers find it very easy to think about JavaScript
+`Object`s, so they often send their "stringified" version as responses.
 
 The `then()` takes a function. Here is where you tell JavaScript to ask the
 network response to be turned into JSON.  When starting out, this first
