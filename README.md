@@ -9,39 +9,44 @@
 ## Introduction
 
 When it comes to making engaging web sites, we often find ourselves needing to
-send a lot of data (text, images, media, etc.). But sending a **huge** amount
-of data when you first land on a page puts a huge burden on the user's
-computer. The user's computer has to build the DOM and integrate all those
-pieces, retrieving and stitching them together. Users experience this process as
-slowness and too much of it means they'll click away and never come back.
+send a lot of data (text, images, media, etc.) so that the page is exciting.
 
-Web users expect sites to load quickly **and** to stay updated. Research shows
-that 40 percent of visitors to a website will leave if the site takes more than
-3 seconds to load. Mobile users are even _less_ patient.
+**But** browsers won't show anything until they've processed all the of that
+data. As a result, they show nothing. The screen stays blank and users
+experience "waiting."
 
-We deliver sites that keep users engaged by using a technique called
-***AJAX***. In AJAX we:
+![Spanky waits](https://media.giphy.com/media/tXL4FHPSnVJ0A/giphy.gif)
 
-1. Deliver an initial, engaging page using HTML and CSS
-2. Use JavaScript to add more to the DOM, behind the scenes
+Too much waiting means visitors will click away and never come back. Web users
+expect sites to load quickly **and** to stay updated. Research shows that 40
+percent of visitors to a website will leave if the site takes more than 3
+seconds to load. Mobile users are even _less_ patient.
+
+To solve this problem and help provide lots of other really great features, we
+developed a technique called **_AJAX_**.
+
+In AJAX we:
+
+1. Deliver an initial, engaging page using HTML and CSS which browsers render
+   _quickly_
+2. _Then_ we use JavaScript to add more to the DOM, behind the scenes
 
 AJAX relies on several technologies:
 
 * Things called `Promise`s
 * Things called `XMLHttpRequestObject`s
-* A [serialization format][sf] called JSON
+* A [serialization format][sf] called JSON for "JavaScript Object Notation"
 * [asynchronous Input / Output][asyncIO]
 * [the event loop][el]
 
-We're going to gloss over all these pieces in this lesson. By doing so, we can
-_see_ how the JavaScript `fetch()` function works, and experience the AJAX
-technique.
-
-> **STRETCH**: If you were to apply for a software developer position, you
-> would be expected to understand each of the "glossed over" elements. This
-> course will provide additional material to introduce you to the key
-> technology. If, on the other hand, you're not seeking that deeper technical
-> understanding, this introduction should be enough.
+Part of what makes AJAX complicated to learn is that to understand it
+_thoroughly_, you need to understand _all_ these components. For the moment,
+however, we're going to gloss over all these pieces in this lesson. It just so
+happens that modern browsers have _abstracted_ all those components into a
+single function called `fetch()`. While someone interviewing to be a front-end
+developer will be expected to be able to explain all those components above
+(which we _will_ cover later), while we're getting a hang of things, we're
+going to simplify our task by using `fetch()`.
 
 Let's learn to use `fetch()` to apply the AJAX technique: a way to load
 additional data _after_ information is presented to the user.
@@ -49,49 +54,114 @@ additional data _after_ information is presented to the user.
 ## Explain How to Fetch Data with `fetch()`
 
 The `fetch()` function retrieves data. It's a global _method_ on the `window`
-object. That means you can simply use it with `fetch()`.
+object. That means you can simply use it with `fetch()` in DevTools.
 
-Here's the skeleton for using it:
+Here's the skeleton for using it. We'll provide it again with lots of comments
+so you can step through what's happening, but for a quick reference, here's
+the skeleton:
 
 ```js
 fetch("string representing a URL to a data source")
-  .then(response => response.json())
-  .then(json => ...)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(json){
+    // Use this data inside of `json` to do DOM manipulation
+  })
 ```
 
-The first thing you need is a `String` that represents a URL that can provide
-you some data. As it happens, http://api.open-notify.org/astros.json will
-provide a list of the humans in space. You can paste this URL into a browser
-tab and see that this URL returns a JSON structure. You provide this string as
-the first argument to `fetch()`.
+Let's add some in-line JavaScript contents to help us track what's going on.
+Since JavaScript doesn't care about comments or whitespace, we're going to add
+multi-line (`/*...*/`) comments to help explain what's going on:
 
-You will want to _chain_ a call to `then()` at the end of `fetch()`.
+```js
+fetch("string representing a URL to a data source")
+  /*
+    The function above returns an object that represents what the data source
+    sent back. It does *not* return the actual content.
 
-> **REMEMBER**: Since JavaScript doesn't care about whitespace
-> 
-> ```js
-> fetch("string representing a URL to a data source").then(response => response.json());
-> ```
-> 
-> is the same as:
-> 
-> ```js
-> fetch("string representing a URL to a data source")
->   .then(response => response.json());
-> ```
+    We have to call the then() method on the object that comes back. then()
+    takes as its argument a function that receives the response as its argument.
+    Inside of the function, we do whatever processing we need, but at the end we
+    *have to return* the content that we've gotten out of the response.
+
+    The response has some basic functions on it for the most common data types.
+    The most important ones are .json() and .text().
+
+    This callback function is usually only one line: returning the content from
+    the response. What we return from this function will be used in the _next_
+    then() function.
+  */
+
+  .then(function(response) {
+    return response.json();
+  })
+
+  /*
+    The function above returns the content from the response.
+    We can use that content inside of the callback function that's
+    passed in to the then() function below.
+  */
+
+  .then(function(json){
+    // Use this data inside of `json` to do DOM manipulation
+  })
+```
+
+### Filling Out the Example
+
+Let's fill out our base skeleton.
+
+First, we'll provide a `String` argument to `fetch()`.  As it happens,
+`http://api.open-notify.org/astros.json` will provide a list of the humans in
+space. You can paste this URL into a browser tab and see that this URL returns
+a JSON structure.
+
+JSON is a way to send a collection of data across in the internet. It just so
+happens that this `String` is written in a way that would be valid JavaScript
+syntax for an `Object` instance. Thus the name "JavaScript Object" notation or,
+JSON ("jay-sawn"). Programmers find it very easy to think about JavaScript
+`Object`s, so they often send their "stringified" version as responses.
 
 The `then()` takes a function. Here is where you tell JavaScript to ask the
-network response to be turned into JSON.  When starting out, this first
-`then()` will pretty much be the same across all your uses of `fetch()`.
+network response to be turned into JSON.  When you first start using `fetch()`
+most of your first `then()`s are going to look like this:
+
+```js
+function(response) {
+  return response.json();
+}
+```
 
 The final `then()` is when you actually get some JSON passed in. You can then
-do something with the JSON. The easiest thing is to `console.log()` the JSON
-_or_ to hand the JSON off to another function.
+do something with the JSON. The easiest options are
+
+* `alert()` the JSON
+* `console.log()` the JSON
+* hand the JSON off to another function.
+
+We'll go for the `console.log()` approach:
+
+```js
+function(json) {
+  console.log(json)
+}
+```
+
+> **STRETCH:** But you _should_ be able to imagine that you could do some DOM
+> manipulation instead.
+
+Here's a completed example:
 
 ```js
 fetch('http://api.open-notify.org/astros.json')
-  .then(response => response.json())
-  .then(json => console.log(json));
+.then(function(response) {
+    return response.json();
+    })
+.then(function(json) {
+    console.log(json)
+    });
+
 ```
 
 ![kimmy wow](http://i.giphy.com/3osxYwZm9WZwnt1Zja.gif)
@@ -100,7 +170,7 @@ Let's perform a trivial demonstration. Open up a new **incognito** tab in
 Chrome. Open up DevTools and paste the following:
 
 ```js
-fetch('http://api.open-notify.org/astros.json').then(response => response.json()).then(json => document.write(`Holy cow! There are ${json["number"]} humans in space.`));
+fetch('http://api.open-notify.org/astros.json').then(function(response) { return response.json(); }).then(function(json) { console.log(json) });
 ```
 
 ![Simple fetch()](https://curriculum-content.s3.amazonaws.com/skills-front-end-web-development/js-async-fetch-readme/simple_fetch_incog_window.png)
@@ -113,7 +183,9 @@ DevTools console. We'll cover that later.
 As you can see, `fetch()` provides us with a short way to fetch and work with
 resources. However, `fetch()` has only recently arrived in browsers. In older
 code you might see `jquery.ajax` or `$.ajax` or an object called an
-`XMLHttpRequestObject`.
+`XMLHttpRequestObject`. These are distractions at this point in your education.
+After working with `fetch()` you'll be able to more easily integrate these
+special topics.
 
 ## Identify Examples of the AJAX Technique on Popular Websites
 
