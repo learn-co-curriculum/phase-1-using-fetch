@@ -166,8 +166,8 @@ fetch('http://api.open-notify.org/astros.json')
 
 ![kimmy wow](http://i.giphy.com/3osxYwZm9WZwnt1Zja.gif)
 
-Let's perform a trivial demonstration. Open up a new **incognito** tab in
-Chrome. Open up DevTools and paste the following:
+Let's perform a demonstration. Navigate to http://open-notify.org in a new tab (you must be on this webpage).
+Open up DevTools and paste the following:
 
 ```js
 fetch('http://api.open-notify.org/astros.json').then(function(response) { return response.json(); }).then(function(json) { console.log(json) });
