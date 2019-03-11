@@ -170,7 +170,13 @@ Let's perform a demonstration. Navigate to http://open-notify.org in a new tab (
 Open up DevTools and paste the following:
 
 ```js
-fetch('http://api.open-notify.org/astros.json').then(function(response) { return response.json(); }).then(function(json) { console.log(json) });
+fetch('http://api.open-notify.org/astros.json')
+.then(function(response) {
+  return response.json();
+}).then(function(json) {
+  console.log(json);
+  console.log(`Wow, there are ${json["number"]} people in space right now!`);
+});
 ```
 
 ![Simple fetch()](https://curriculum-content.s3.amazonaws.com/skills-front-end-web-development/js-async-fetch-readme/simple_fetch_incog_window.png)
