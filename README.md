@@ -166,11 +166,19 @@ fetch('http://api.open-notify.org/astros.json')
 
 ![kimmy wow](http://i.giphy.com/3osxYwZm9WZwnt1Zja.gif)
 
-Let's perform a trivial demonstration. Open up a new **incognito** tab in
-Chrome. Open up DevTools and paste the following:
+Let's perform a demonstration. Navigate to http://open-notify.org in an **incognito** tab. We are using
+incognito browser to make sure that none of your browsing history intereferes with this experiment.
+
+Open up DevTools and paste the following:
 
 ```js
-fetch('http://api.open-notify.org/astros.json').then(function(response) { return response.json(); }).then(function(json) { console.log(json) });
+fetch('http://api.open-notify.org/astros.json')
+.then(function(response) {
+  return response.json();
+}).then(function(json) {
+  console.log(json);
+  console.log(`Holy cow! There are ${json["number"]} humans in space.`);
+});
 ```
 
 ![Simple fetch()](https://curriculum-content.s3.amazonaws.com/skills-front-end-web-development/js-async-fetch-readme/simple_fetch_incog_window.png)
