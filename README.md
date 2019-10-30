@@ -62,12 +62,12 @@ the skeleton:
 
 ```js
 fetch("string representing a URL to a data source")
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(json){
-    // Use this data inside of `json` to do DOM manipulation
-  })
+.then(function(response) {
+  return response.json();
+})
+.then(function(json){
+  // Use this data inside of `json` to do DOM manipulation
+})
 ```
 
 Let's add some in-line JavaScript contents to help us track what's going on.
@@ -156,11 +156,11 @@ Here's a completed example:
 ```js
 fetch('http://api.open-notify.org/astros.json')
 .then(function(response) {
-    return response.json();
-    })
+  return response.json();
+})
 .then(function(json) {
-    console.log(json)
-    });
+  console.log(json)
+});
 
 ```
 
