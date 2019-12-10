@@ -70,7 +70,7 @@ fetch("string representing a URL to a data source")
 })
 ```
 
-Let's add some in-line JavaScript contents to help us track what's going on.
+Let's add some in-line JavaScript comments to help us track what's going on.
 Since JavaScript doesn't care about comments or whitespace, we're going to add
 multi-line (`/*...*/`) comments to help explain what's going on:
 
