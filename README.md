@@ -225,8 +225,6 @@ accordion display. There are many older methods for fetching data, but
 
 - [MDN Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 
-<p class='util--hide'>View <a href='https://learn.co/lessons/fewpjs-use-fetch'>Use Fetch</a> on Learn.co and start learning to code for free.</p>
-
 [sf]: https://en.wikipedia.org/wiki/Serialization
 [asyncIO]: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Introducing
 [el]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
