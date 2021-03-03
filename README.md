@@ -33,11 +33,11 @@ In AJAX we:
 
 AJAX relies on several technologies:
 
-* Things called `Promise`s
-* Things called `XMLHttpRequestObject`s
-* A [serialization format][sf] called JSON for "JavaScript Object Notation"
-* [asynchronous Input / Output][asyncIO]
-* [the event loop][el]
+- Things called `Promise`s
+- Things called `XMLHttpRequestObject`s
+- A [serialization format][sf] called JSON for "JavaScript Object Notation"
+- [asynchronous Input / Output][asyncIO]
+- [the event loop][el]
 
 Part of what makes AJAX complicated to learn is that to understand it
 _thoroughly_, you need to understand _all_ these components. For the moment,
@@ -45,7 +45,7 @@ however, we're going to gloss over all these pieces in this lesson. It just so
 happens that modern browsers have _abstracted_ all those components into a
 single function called `fetch()`. While someone interviewing to be a front-end
 developer will be expected to be able to explain all those components above
-(which we _will_ cover later), while we're getting a hang of things, we're
+(which we _will_ cover later), while we're getting the hang of things, we're
 going to simplify our task by using `fetch()`.
 
 Let's learn to use `fetch()` to apply the AJAX technique: a way to load
@@ -66,31 +66,21 @@ fetch("string representing a URL to a data source")
   return response.json();
 })
 .then(function(json){
-  // Use this data inside of `json` to do DOM manipulation
+  // Use the data inside of `json` to do DOM manipulation
 })
 ```
 
 Let's add some in-line JavaScript comments to help us track what's going on.
 Since JavaScript doesn't care about comments or whitespace, we're going to add
-multi-line (`/*...*/`) comments to help explain what's going on:
+multi-line (`/*...*/`) comments to help explain what's happening:
 
 ```js
 fetch("string representing a URL to a data source")
   /*
-    The function above returns an object that represents what the data source
-    sent back. It does *not* return the actual content.
-
-    We have to call the then() method on the object that comes back. then()
-    takes as its argument a function that receives the response as its argument.
-    Inside of the function, we do whatever processing we need, but at the end we
-    *have to return* the content that we've gotten out of the response.
-
-    The response has some basic functions on it for the most common data types.
-    The most important ones are .json() and .text().
-
-    This callback function is usually only one line: returning the content from
-    the response. What we return from this function will be used in the _next_
-    then() function.
+    Here we are calling `fetch()` and passing a URL to a data source as the
+    argument. The function call returns an object that represents what the data
+    source sent back. It does *not* return the actual content. (More about this
+    later.)
   */
 
   .then(function(response) {
@@ -98,15 +88,39 @@ fetch("string representing a URL to a data source")
   })
 
   /*
-    The function above returns the content from the response.
-    We can use that content inside of the callback function that's
-    passed in to the then() function below.
+    Next, we call the then() method on the object that comes back from the
+    `fetch()`. We capture the object into the `response` parameter that's
+    passed as an argument into a callback function.
+    
+    Inside the callback function, we do whatever processing we need on the
+    object, in this case, converting it into JSON using the built-in `json()`
+    method. (Another commonly-used method is `text()`, which will convert the
+    response into plain text.) Finally, we return the JSON-ified response. 
+    
+    Note that we *have to return* the content that we've gotten out of the
+    response and converted to JSON in order to use the data in the next then()
+    method call.
+
+    This first callback function is usually only one line: returning the 
+    content from the response after converting it into the format me need.
   */
 
   .then(function(json){
-    // Use this data inside of `json` to do DOM manipulation
+    // Use the data inside of `json` to do DOM manipulation
   })
+  /*
+    This time, the `then()` method is receiving the object that we returned
+    from the first call to `then()` (our JSON-ified object in this case). We
+    capture the object in the parameter `json` and pass it into a second
+    callback function, where we will write code to do DOM manipulation using
+    our object
+  */
 ```
+
+> **Top Tip:** As always, we can name the parameters being used in our callback
+> functions anything we like, but most JavaScript developers use `response` and
+> `json` by convention. Following the same naming convention is optional, but it
+> will make your code more readable to other developers.
 
 ### Filling Out the Example
 
@@ -114,14 +128,15 @@ Let's fill out our base skeleton.
 
 First, we'll provide a `String` argument to `fetch()`.  As it happens,
 `http://api.open-notify.org/astros.json` will provide a list of the humans in
-space. You can paste this URL into a browser tab and see that this URL returns
-a JSON structure.
+space. You can paste this URL into a browser tab and see that the data uses a
+JSON structure.
 
-JSON is a way to send a collection of data across in the internet. It just so
-happens that this `String` is written in a way that would be valid JavaScript
-syntax for an `Object` instance. Thus the name "JavaScript Object" notation or,
-JSON ("jay-sawn"). Programmers find it very easy to think about JavaScript
-`Object`s, so they often send their "stringified" version as responses.
+JSON is a way to send a collection of data in the internet, formatted as a
+`String`. It just so happens that this string is written in a way that would be
+valid JavaScript syntax for an `Object` instance. Thus the name "JavaScript
+Object Notation", or JSON ("jay-sawn"). Programmers find it very easy to think
+about JavaScript `Object`s, so they often send "stringified" versions of
+`Object`s as responses.
 
 The `then()` takes a function. Here is where you tell JavaScript to ask the
 network response to be turned into JSON.  When you first start using `fetch()`
@@ -133,12 +148,13 @@ function(response) {
 }
 ```
 
-The final `then()` is when you actually get some JSON passed in. You can then
-do something with the JSON. The easiest options are
+The final `then()` is when you actually get some JSON (the return from the first
+`then()`) passed in. You can then do something with the JSON. The easiest
+options are
 
-* `alert()` the JSON
-* `console.log()` the JSON
-* hand the JSON off to another function.
+- `alert()` the JSON
+- `console.log()` the JSON
+- hand the JSON off to another function.
 
 We'll go for the `console.log()` approach:
 
@@ -156,20 +172,21 @@ Here's a completed example:
 ```js
 fetch('http://api.open-notify.org/astros.json')
 .then(function(response) {
+  console.log(response);
   return response.json();
 })
 .then(function(json) {
-  console.log(json)
+  console.log(json);
 });
-
 ```
 
 ![kimmy wow](http://i.giphy.com/3osxYwZm9WZwnt1Zja.gif)
 
-Let's perform a demonstration. Navigate to http://open-notify.org in an **incognito** tab. We are using
-incognito browser to make sure that none of your browsing history intereferes with this experiment.
+Let's perform a demonstration. Navigate to http://open-notify.org in an
+**incognito** tab. We need to go incognito to make sure that none of your
+browsing history intereferes with this experiment.
 
-Open up DevTools and paste the following:
+Open up DevTools and paste the following into the console:
 
 ```js
 fetch('http://api.open-notify.org/astros.json')
