@@ -54,11 +54,10 @@ additional data _after_ information is presented to the user.
 ## Explain How to Fetch Data with `fetch()`
 
 The `fetch()` function retrieves data. It's a global _method_ on the `window`
-object. That means you can simply use it with `fetch()` in DevTools.
-
-Here's the skeleton for using it. We'll provide it again with lots of comments
-so you can step through what's happening, but for a quick reference, here's
-the skeleton:
+object. That means you can use it simply by calling `fetch()` and passing in a
+path to a resource as an argument. To use the data that is returned by the
+`fetch()`, we need to chain on the `then()` method. We can see what this looks
+like below:
 
 ```js
 fetch("string representing a URL to a data source")
@@ -70,9 +69,8 @@ fetch("string representing a URL to a data source")
 })
 ```
 
-Let's add some in-line JavaScript comments to help us track what's going on.
-Since JavaScript doesn't care about comments or whitespace, we're going to add
-multi-line (`/*...*/`) comments to help explain what's happening:
+Now let's add some multi-line (`/*...*/`) comments (which JavaScript will
+ignore) to describe what's happening:
 
 ```js
 fetch("string representing a URL to a data source")
@@ -89,7 +87,7 @@ fetch("string representing a URL to a data source")
 
   /*
     Next, we call the then() method on the object that comes back from the
-    `fetch()`. We capture the object into the `response` parameter that's
+    `fetch()`. We capture the object into the `response` parameter so it can be
     passed as an argument into a callback function.
     
     Inside the callback function, we do whatever processing we need on the
@@ -110,10 +108,10 @@ fetch("string representing a URL to a data source")
   })
   /*
     This time, the `then()` method is receiving the object that we returned
-    from the first call to `then()` (our JSON-ified object in this case). We
+    from the first call to `then()` (our JSON-ified object, in this case). We
     capture the object in the parameter `json` and pass it into a second
     callback function, where we will write code to do DOM manipulation using
-    our object
+    the data from the fetch
   */
 ```
 
@@ -139,8 +137,9 @@ about JavaScript `Object`s, so they often send "stringified" versions of
 `Object`s as responses.
 
 The `then()` takes a function. Here is where you tell JavaScript to ask the
-network response to be turned into JSON.  When you first start using `fetch()`
-most of your first `then()`s are going to look like this:
+network response to be turned into JSON.  When you first start using `fetch()`,
+most of your first `then()`s are going have a callback function that looks like
+this:
 
 ```js
 function(response) {
@@ -149,8 +148,8 @@ function(response) {
 ```
 
 The final `then()` is when you actually get some JSON (the return from the first
-`then()`) passed in. You can then do something with the JSON. The easiest
-options are
+`then()`) passed in. You can then do something with that JSON. The easiest
+options are:
 
 - `alert()` the JSON
 - `console.log()` the JSON
@@ -200,8 +199,8 @@ fetch('http://api.open-notify.org/astros.json')
 
 ![Simple fetch()](https://curriculum-content.s3.amazonaws.com/skills-front-end-web-development/js-async-fetch-readme/simple_fetch_incog_window.png)
 
-You might notice that this chained method call returned a `Promise` in the
-DevTools console. We'll cover that later.
+You might notice in the DevTools console that this chained method call returned
+a `Promise`. We'll cover that later.
 
 ## Working Around Backwards Compatibility Issues
 
@@ -228,10 +227,10 @@ The AJAX technique opens up a lot of uses!
 
 ## Conclusion
 
-Many pages use AJAX to provide users fast and engaging sites. It's certainly
-not required in all sites. Using it for every site is a step backward when
-simple HTML would suffice. However, as sites have more and more material, the
-AJAX technique is a great tool to have.
+Many pages use AJAX to provide users fast and engaging sites. It's certainly not
+required in all sites. In fact, using it could be a step backward if simple HTML
+would suffice. However, as sites have more and more material, the AJAX technique
+is a great tool to have.
 
 Using `fetch()`, we can include requests for data wherever we need to in
 our code. We can `fetch()` data on the click of a button or the expansion of an
