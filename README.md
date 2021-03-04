@@ -182,7 +182,7 @@ fetch('http://api.open-notify.org/astros.json')
 
 Let's perform a demonstration. Navigate to http://open-notify.org in an
 **incognito** tab. We need to go incognito to make sure that none of your
-browsing history intereferes with this experiment.
+browsing history interferes with this experiment.
 
 Open up DevTools and paste the following into the console:
 
@@ -214,13 +214,13 @@ special topics.
 
 The AJAX technique opens up a lot of uses!
 
-* It allows us to pull in dynamic content. The same "framing" HTML page remains
+- It allows us to pull in dynamic content. The same "framing" HTML page remains
   on screen for a cooking website. The recipe on display updates _without_ page
-  load. This approach was pioneered by GMail whose nav area is swapped
-  for mail content swiftly &mdash; thanks to AJAX.
-* It allows us to get data from multiple sources. We could make a website that
-  displays the current weather forecast and the current price of bitcoin side
-  by side! This approach is used by most sites to render ads. Your content loads
+  load. This approach was pioneered by GMail whose nav area is swapped for mail
+  content swiftly &mdash; thanks to AJAX.
+- It allows us to get data from multiple sources. We could make a website that
+  displays the current weather forecast and the current price of bitcoin side by
+  side! This approach is used by most sites to render ads. Your content loads
   while JavaScript gets the ad to show and injects it into your page (sometimes
   AJAX can be used in a way that we don't _entirely_ like).
 
@@ -231,10 +231,10 @@ required in all sites. In fact, using it could be a step backward if simple HTML
 would suffice. However, as sites have more and more material, the AJAX technique
 is a great tool to have.
 
-Using `fetch()`, we can include requests for data wherever we need to in
-our code. We can `fetch()` data on the click of a button or the expansion of an
-accordion display. There are many older methods for fetching data, but
-`fetch()` is the future.
+Using `fetch()`, we can include requests for data wherever we need to in our
+code. We can `fetch()` data on the click of a button or the expansion of an
+accordion display. There are many older methods for fetching data, but `fetch()`
+is the future.
 
 ## Resources
 
