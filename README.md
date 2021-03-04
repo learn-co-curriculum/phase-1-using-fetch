@@ -116,7 +116,8 @@ fetch("string representing a URL to a data source")
 ```
 
 > **Top Tip:** As always, we can name the parameters being used in our callback
-> functions anything we like, but you will often see `response` and `json` used.
+> functions anything we like, but you will often see `response` (or `resp`) and
+> `json` used.
 
 ### Filling Out the Example
 
