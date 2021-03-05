@@ -1,4 +1,4 @@
-# Using `fetch()`
+# Using fetch()
 
 ## Learning Goals
 
