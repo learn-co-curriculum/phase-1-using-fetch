@@ -217,7 +217,7 @@ The AJAX technique opens up a lot of uses!
 - It allows us to pull in dynamic content. The same "framing" HTML page remains
   on screen for a cooking website. The recipe on display updates _without_ page
   load. This approach was pioneered by GMail whose nav area is swapped for mail
-  content swiftly &mdash; thanks to AJAX.
+  content swiftly — thanks to AJAX.
 - It allows us to get data from multiple sources. We could make a website that
   displays the current weather forecast and the current price of bitcoin side by
   side! This approach is used by most sites to render ads. Your content loads
