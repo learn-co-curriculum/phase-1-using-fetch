@@ -176,11 +176,10 @@ fetch("http://api.open-notify.org/astros.json")
   });
 ```
 
-![kimmy wow](http://i.giphy.com/3osxYwZm9WZwnt1Zja.gif)
-
-Let's perform a demonstration. Navigate to http://open-notify.org in an
-**incognito** tab. We need to go incognito to make sure that none of your
-browsing history interferes with this experiment.
+Let's perform a demonstration. Navigate to
+[http://open-notify.org](http://open-notify.org) in an **incognito** tab. We
+need to go incognito to make sure that none of your browsing history interferes
+with this experiment.
 
 Open up DevTools and paste the following into the console:
 
