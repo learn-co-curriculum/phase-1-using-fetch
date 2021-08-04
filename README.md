@@ -15,8 +15,6 @@ send a lot of data (text, images, media, etc.) so that the page is exciting.
 data. As a result, they show nothing. The screen stays blank and users
 experience "waiting."
 
-![Spanky waits](https://media.giphy.com/media/tXL4FHPSnVJ0A/giphy.gif)
-
 Too much waiting means visitors will click away and never come back. Web users
 expect sites to load quickly **and** to stay updated. Research shows that 40
 percent of visitors to a website will leave if the site takes more than 3
@@ -36,7 +34,7 @@ AJAX relies on several technologies:
 - Things called `Promise`s
 - Things called `XMLHttpRequestObject`s
 - A [serialization format][sf] called JSON for "JavaScript Object Notation"
-- [asynchronous Input / Output][asyncIO]
+- [asynchronous Input / Output][asyncio]
 - [the event loop][el]
 
 Part of what makes AJAX complicated to learn is that to understand it
@@ -61,12 +59,12 @@ like below:
 
 ```js
 fetch("string representing a URL to a data source")
-.then(function(response) {
-  return response.json();
-})
-.then(function(json){
-  // Use the data inside of `json` to do DOM manipulation
-})
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (json) {
+    // Use the data inside of `json` to do DOM manipulation
+  });
 ```
 
 Now let's add some multi-line (`/*...*/`) comments (which JavaScript will
@@ -81,7 +79,7 @@ fetch("string representing a URL to a data source")
     later.)
   */
 
-  .then(function(response) {
+  .then(function (response) {
     return response.json();
   })
 
@@ -103,10 +101,10 @@ fetch("string representing a URL to a data source")
     content from the response after converting it into the format me need.
   */
 
-  .then(function(json){
+  .then(function (json) {
     // Use the data inside of `json` to do DOM manipulation
-  })
-  /*
+  });
+/*
     This time, the `then()` method is receiving the object that we returned
     from the first call to `then()` (our JSON-ified object, in this case). We
     capture the object in the parameter `json` and pass it into a second
@@ -123,7 +121,7 @@ fetch("string representing a URL to a data source")
 
 Let's fill out our base skeleton.
 
-First, we'll provide a `String` argument to `fetch()`.  As it happens,
+First, we'll provide a `String` argument to `fetch()`. As it happens,
 `http://api.open-notify.org/astros.json` will provide a list of the humans in
 space. You can paste this URL into a browser tab and see that the data uses a
 JSON structure.
@@ -136,7 +134,7 @@ about JavaScript `Object`s, so they often send "stringified" versions of
 `Object`s as responses.
 
 The `then()` takes a function. Here is where you tell JavaScript to ask the
-network response to be turned into JSON.  When you first start using `fetch()`,
+network response to be turned into JSON. When you first start using `fetch()`,
 most of your first `then()`s are going have a callback function that looks like
 this:
 
@@ -168,14 +166,14 @@ function(json) {
 Here's a completed example:
 
 ```js
-fetch('http://api.open-notify.org/astros.json')
-.then(function(response) {
-  console.log(response);
-  return response.json();
-})
-.then(function(json) {
-  console.log(json);
-});
+fetch("http://api.open-notify.org/astros.json")
+  .then(function (response) {
+    console.log(response);
+    return response.json();
+  })
+  .then(function (json) {
+    console.log(json);
+  });
 ```
 
 ![kimmy wow](http://i.giphy.com/3osxYwZm9WZwnt1Zja.gif)
@@ -187,13 +185,14 @@ browsing history interferes with this experiment.
 Open up DevTools and paste the following into the console:
 
 ```js
-fetch('http://api.open-notify.org/astros.json')
-.then(function(response) {
-  return response.json();
-}).then(function(json) {
-  console.log(json);
-  console.log(`Holy cow! There are ${json["number"]} humans in space.`);
-});
+fetch("http://api.open-notify.org/astros.json")
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (json) {
+    console.log(json);
+    console.log(`Holy cow! There are ${json["number"]} humans in space.`);
+  });
 ```
 
 ![Simple fetch()](https://curriculum-content.s3.amazonaws.com/skills-front-end-web-development/js-async-fetch-readme/simple_fetch_incog_window.png)
@@ -241,5 +240,5 @@ is the future.
 - [MDN Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 
 [sf]: https://en.wikipedia.org/wiki/Serialization
-[asyncIO]: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Introducing
+[asyncio]: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Introducing
 [el]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
