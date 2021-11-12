@@ -98,7 +98,7 @@ fetch("string representing a URL to a data source")
     method call.
 
     This first callback function is usually only one line: returning the 
-    content from the response after converting it into the format me need.
+    content from the response after converting it into the format we need.
   */
 
   .then(function (json) {
