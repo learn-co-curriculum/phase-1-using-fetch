@@ -62,8 +62,8 @@ fetch("string representing a URL to a data source")
   .then(function (response) {
     return response.json();
   })
-  .then(function (json) {
-    // Use the data inside of `json` to do DOM manipulation
+  .then(function (data) {
+    // Use the data from the response to do DOM manipulation
   });
 ```
 
@@ -71,51 +71,48 @@ Now let's add some multi-line (`/*...*/`) comments (which JavaScript will
 ignore) to describe what's happening:
 
 ```js
+/*
+  Here we are calling `fetch()` and passing a URL to a data source as the
+  argument. The function call returns a Promise object that represents what the data
+  source sent back. It does *not* return the actual content. (More about this
+  later.)
+*/
 fetch("string representing a URL to a data source")
   /*
-    Here we are calling `fetch()` and passing a URL to a data source as the
-    argument. The function call returns an object that represents what the data
-    source sent back. It does *not* return the actual content. (More about this
-    later.)
-  */
-
-  .then(function (response) {
-    return response.json();
-  })
-
-  /*
-    Next, we call the then() method on the object that comes back from the
-    `fetch()`. We capture the object into the `response` parameter so it can be
-    passed as an argument into a callback function.
+    Next, we call the `then()` method on the Promise object returned by calling
+    `fetch()`. `then()` takes one argument: a callback function. 
+    (More on Promises later!)
     
     Inside the callback function, we do whatever processing we need on the
     object, in this case, converting it from JSON using the built-in `json()`
     method. (Another commonly-used method is `text()`, which will convert the
-    response into plain text.) Finally, we return the JSON-ified response. 
+    response into plain text.) The `json()` method returns a Promise, which we
+    return from our callback function.
     
     Note that we *have to return* the content that we've gotten out of the
-    response and converted to JSON in order to use the data in the next then()
+    response and converted from JSON in order to use the data in the next then()
     method call.
 
     This first callback function is usually only one line: returning the 
     content from the response after converting it into the format we need.
   */
-
-  .then(function (json) {
-    // Use the data inside of `json` to do DOM manipulation
-  });
-/*
-    This time, the `then()` method is receiving the object that we returned
-    from the first call to `then()` (our JSON-ified object, in this case). We
-    capture the object in the parameter `json` and pass it into a second
-    callback function, where we will write code to do DOM manipulation using
-    the data from the fetch
+  .then(function (response) {
+    return response.json();
+  })
+  /*
+    This time, the `then()` method is receiving the object that we returned from the
+    first call to `then()` (our parsed JSON object). We capture the object in the
+    parameter `data` and pass it into a second callback function, where we will
+    write code to do DOM manipulation using the data returned from the server
   */
+  .then(function (data) {
+    // Use the actual data to do DOM manipulation
+  });
 ```
 
 > **Top Tip:** As always, we can name the parameters being used in our callback
 > functions anything we like, but you will often see `response` (or `resp`) and
-> `json` used.
+> `data` used.
 
 ### Filling Out the Example
 
@@ -133,30 +130,33 @@ Object Notation", or JSON ("jay-sawn"). Programmers find it very easy to think
 about JavaScript `Object`s, so they often send "stringified" versions of
 `Object`s as responses.
 
-The `then()` takes a function. Here is where you tell JavaScript to ask the
-network response to be turned into JSON. When you first start using `fetch()`,
-most of your first `then()`s are going have a callback function that looks like
-this:
+The `then()` method takes a callback function as an argument. Here is where you
+tell JavaScript to parse the network response, which is formatted as a special
+JSON string, into actual JavaScript objects. When you first start using
+`fetch()`, most of your first `then()`s are going have a callback function that
+looks like this:
 
 ```js
 function(response) {
+  // take the response, which is a JSON-formatted **string**,
+  // and parse it into an actual JavaScript **object**
   return response.json();
 }
 ```
 
-The final `then()` is when you actually get some JSON (the return from the first
-`then()`) passed in. You can then do something with that JSON. The easiest
-options are:
+The final `then()` is when you actually get some data (the parsed object
+returned from the first `then()`) passed in. You can then do something with that
+data. The easiest options are:
 
-- `alert()` the JSON
-- `console.log()` the JSON
-- hand the JSON off to another function.
+- `alert()` the data
+- `console.log()` the data
+- hand the data off to another function.
 
 We'll go for the `console.log()` approach:
 
 ```js
-function(json) {
-  console.log(json)
+function(data) {
+  console.log(data)
 }
 ```
 
@@ -171,8 +171,8 @@ fetch("http://api.open-notify.org/astros.json")
     console.log(response);
     return response.json();
   })
-  .then(function (json) {
-    console.log(json);
+  .then(function (data) {
+    console.log(data);
   });
 ```
 
@@ -188,9 +188,9 @@ fetch("http://api.open-notify.org/astros.json")
   .then(function (response) {
     return response.json();
   })
-  .then(function (json) {
-    console.log(json);
-    console.log(`Holy cow! There are ${json["number"]} humans in space.`);
+  .then(function (data) {
+    console.log(data);
+    console.log(`Holy cow! There are ${data["number"]} humans in space.`);
   });
 ```
 
@@ -202,11 +202,11 @@ a `Promise`. We'll cover that later.
 ## Working Around Backwards Compatibility Issues
 
 As you can see, `fetch()` provides us with a short way to fetch and work with
-resources. However, `fetch()` has only recently arrived in browsers. In older
-code you might see `jquery.ajax` or `$.ajax` or an object called an
-`XMLHttpRequestObject`. These are distractions at this point in your education.
-After working with `fetch()` you'll be able to more easily integrate these
-special topics.
+resources. In older code you might see `jquery.ajax` or `$.ajax` or an object
+called an `XMLHttpRequestObject`. You might also see libraries like `axios` used
+in newer code. These are distractions at this point in your education. After
+working with `fetch()` you'll be able to more easily integrate these special
+topics.
 
 ## Identify Examples of the AJAX Technique on Popular Websites
 
@@ -239,5 +239,6 @@ is the future.
 - [MDN Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 
 [sf]: https://en.wikipedia.org/wiki/Serialization
-[asyncio]: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Introducing
+[asyncio]:
+  https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Introducing
 [el]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
