@@ -63,7 +63,7 @@ fetch("string representing a URL to a data source")
     return response.json();
   })
   .then(function (data) {
-    // Use the data the response to do DOM manipulation
+    // Use the data from the response to do DOM manipulation
   });
 ```
 
