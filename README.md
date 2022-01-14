@@ -89,7 +89,7 @@ fetch("string representing a URL to a data source")
     passed as an argument into a callback function.
     
     Inside the callback function, we do whatever processing we need on the
-    object, in this case, converting it into JSON using the built-in `json()`
+    object, in this case, converting it from JSON using the built-in `json()`
     method. (Another commonly-used method is `text()`, which will convert the
     response into plain text.) Finally, we return the JSON-ified response. 
     
