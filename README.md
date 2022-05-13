@@ -11,7 +11,7 @@
 When it comes to making engaging web sites, we often find ourselves needing to
 send a lot of data (text, images, media, etc.) so that the page is exciting.
 
-**But** browsers won't show anything until they've processed all the of that
+**But** browsers won't show anything until they've processed all of that
 data. As a result, they show nothing. The screen stays blank and users
 experience "waiting."
 
