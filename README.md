@@ -6,14 +6,19 @@
 - Working around backwards compatibility issues
 - Identify examples of the AJAX technique on popular websites
 
+## Setup
+
+This is a code along reading. Please fork and clone this reading down to your
+local computer before starting.
+
 ## Introduction
 
 When it comes to making engaging web sites, we often find ourselves needing to
 send a lot of data (text, images, media, etc.) so that the page is exciting.
 
-**But** browsers won't show anything until they've processed all of that
-data. As a result, they show nothing. The screen stays blank and users
-experience "waiting."
+**But** browsers won't show anything until they've processed all of that data.
+As a result, they show nothing. The screen stays blank and users experience
+"waiting."
 
 Too much waiting means visitors will click away and never come back. Web users
 expect sites to load quickly **and** to stay updated. Research shows that 40
@@ -21,7 +26,9 @@ percent of visitors to a website will leave if the site takes more than 3
 seconds to load. Mobile users are even _less_ patient.
 
 To solve this problem and help provide lots of other really great features, we
-developed a technique called **_AJAX_**.
+developed a technique called **_AJAX_**. As mentioned at the beginning of this
+module, AJAX is short for _Asynchronous JavaScript and XML_ (although we'll be
+using JSON instead of XML).
 
 In AJAX we:
 
@@ -37,14 +44,13 @@ AJAX relies on several technologies:
 - [asynchronous Input / Output][asyncio]
 - [the event loop][el]
 
-Part of what makes AJAX complicated to learn is that to understand it
-_thoroughly_, you need to understand _all_ these components. For the moment,
-however, we're going to gloss over all these pieces in this lesson. It just so
-happens that modern browsers have _abstracted_ all those components into a
-single function called `fetch()`. While someone interviewing to be a front-end
-developer will be expected to be able to explain all those components above
-(which we _will_ cover later), while we're getting the hang of things, we're
-going to simplify our task by using `fetch()`.
+It just so happens that modern browsers have _abstracted_ all those components
+into a single function called `fetch()`.
+
+While someone interviewing to be a front-end developer will be expected to be
+able to explain all those components above (which we _will_ cover later), while
+we're getting the hang of things, we're going to simplify our task by using
+`fetch()`.
 
 Let's learn to use `fetch()` to apply the AJAX technique: a way to load
 additional data _after_ information is presented to the user.
@@ -52,10 +58,10 @@ additional data _after_ information is presented to the user.
 ## Explain How to Fetch Data with `fetch()`
 
 The `fetch()` function retrieves data. It's a global _method_ on the `window`
-object. That means you can use it simply by calling `fetch()` and passing in a
-path to a resource as an argument. To use the data that is returned by the
-`fetch()`, we need to chain on the `then()` method. We can see what this looks
-like below:
+object, provided to JavaScript by browsers' web APIs. That means you can use it
+simply by calling `fetch()` and passing in a path to a resource as an argument.
+To use the data that is returned by the `fetch()`, we need to chain on the
+`then()` method. We can see what this looks like below:
 
 ```js
 fetch("string representing a URL to a data source")
@@ -66,6 +72,132 @@ fetch("string representing a URL to a data source")
     // Use the data from the response to do DOM manipulation
   });
 ```
+
+When we write fetch requests in our JavaScript code, this is the form it will
+often take - one call to our `fetch` method, followed by two `.then` statements.
+Let's walk through each of these pieces of code step by step!
+
+## Fetch Itself
+
+Let's start off with the `fetch` function itself. What's it doing? How are we
+using it?
+
+As we discussed in previous sections, clients request data from servers and
+servers send data to clients. This is the _request-response cycle_.
+
+`fetch` is used to initiate that request-response cycle from our client-side
+code to our servers. When we enter a Google search, for example, Google's
+client-side code initiates a `fetch` request.
+
+We use `fetch` by passing it a URL that points toward the server we want to
+communicate with. We'll be mainly passing URLs pointing toward `localhost`
+servers run by JSON Server, but we can pass it a URL pointing toward any API we
+want to work with - this [Game of Thrones](https://anapioficeandfire.com/) API,
+for example! When developing the Frontend for a Full Stack application, you'll
+pass `fetch` the URL to your backend API.
+
+```JavaScript
+fetch("https://anapioficeandfire.com/api/books")
+```
+
+### Fetch is Asynchronous
+
+We discussed JavaScript's asynchronous abilities in some of our previous
+lessons. As a brief refresher, _asynchronous_ code is code that allows us to
+start an operation in our code, then switch to running other pieces of code
+while we wait for that operation to finish.
+
+`fetch` is a prime example of asynchronous code in JavaScript! It's also
+demonstrates how useful asynchronous programming is.
+
+Thinking about making a web request - your computer is asking some remote server
+for some information. You might be thousands of miles away from the server!
+
+That server may then have to interact with a database to get the information
+you've requested. Once the database has finished looking for the appropriate
+data and giving it to the server, the server then has to send that data all the
+way back to you.
+
+That's a lot to do, and it takes a long time!
+
+If our code had to wait for the server to respond with the data we're asking for
+before moving on to other tasks, it could really slow down the performance of
+our website. Code that halts other code from running is often called _blocking_
+code - it blocks our code's ability to move on to other tasks.
+
+Fortunately, because fetch uses asynchronous JavaScript, it is considered
+_non-blocking_ - our code is free to move on to other tasks before our server
+gives us a response!
+
+For example, in the following code snippet, our `console.log` will run before
+the we receive a response back from the server (we'll see this in greater detail
+a little further down).
+
+```JavaScript
+fetch("https://anapioficeandfire.com/api/books")
+
+console.log("I don't wait!")
+```
+
+## Our First .then
+
+Ok, so we can keep doing stuff while waiting for our server to respond - neat.
+
+But what about code that we want to run _after_ our server responds? What about
+code that's supposed to actually _use_ that data? That's where our `.then`
+statements come in.
+
+### Promises
+
+We're going to talk about this in more detail in a later section, but in order
+to understand how `fetch` and `.then` statements work together, we need to talk
+a little bit about _promises_.
+
+A _promise_ is a piece of data that JavaScript generates when it kicks off an
+asynchronous task.
+
+Try adding the following code to your `index.js` file and opening your
+`index.html` file in your browser:
+
+```JavaScript
+const myPromise = fetch("https://anapioficeandfire.com/api/books")
+
+console.log(myPromise)
+```
+
+If you open up your browser console, you should see the following:
+`Promise {<pending>}`.
+
+Because our `fetch` request takes a while to complete, and because we want to
+move on to other tasks, it generates this `Promise` object for us, which we can
+use to determine when the fetch request finishes.
+
+When Promises are first generated, they have a status of _pending_. That status
+can either resolve to _fulfilled_, if the operation is successful, or
+_rejected_, if the operation fails.
+
+Once our fetch is complete, the status of this Promise object will change to
+_fufilled_.
+
+Let's make the following modification to our code:
+
+```JavaScript
+const myPromise = fetch("https://anapioficeandfire.com/api/books")
+
+console.log(myPromise)
+
+setTimeout(() =>{
+    console.log(myPromise)
+}, 1000)
+```
+
+We should now see a new, additional log in our browser console: `Promise
+{<fulfilled>: Response}`. (If you don't see it, try increasing the time interval
+in setTimeout.)
+
+### Waiting for a Fulfilled Promise
+
+Our `.then` statements are designed to wait for the Promise generated by `fetch` to be fulfilled. The code that we pass to a `.then` statement will only run _after_ the Promise has been fulfilled.
 
 Now let's add some multi-line (`/*...*/`) comments (which JavaScript will
 ignore) to describe what's happening:
@@ -194,7 +326,8 @@ fetch("http://api.open-notify.org/astros.json")
   });
 ```
 
-![Simple fetch()](https://curriculum-content.s3.amazonaws.com/skills-front-end-web-development/js-async-fetch-readme/simple_fetch_incog_window.png)
+![Simple
+fetch()](https://curriculum-content.s3.amazonaws.com/skills-front-end-web-development/js-async-fetch-readme/simple_fetch_incog_window.png)
 
 You might notice in the DevTools console that this chained method call returned
 a `Promise`. We'll cover that later.
