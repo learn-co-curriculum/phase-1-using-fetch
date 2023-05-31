@@ -36,21 +36,25 @@ In AJAX we:
    _quickly_
 2. _Then_ we use JavaScript to add more to the DOM, behind the scenes
 
-AJAX relies on several technologies:
+Originally, AJAX relied on several technologies:
 
-- Things called `Promise`s
-- Things called `XMLHttpRequestObject`s
+- `XMLHttpRequestObject`s
 - A [serialization format][sf] called JSON for "JavaScript Object Notation"
 - [asynchronous Input / Output][asyncio]
 - [the event loop][el]
 
-It just so happens that modern browsers have _abstracted_ all those components
-into a single function called `fetch()`.
+While it still uses JSON, the event loop, and asynchronous operations, newer
+implementations of AJAX introduce two new tools:
 
-While someone interviewing to be a front-end developer will be expected to be
-able to explain all those components above (which we _will_ cover later), while
-we're getting the hang of things, we're going to simplify our task by using
-`fetch()`.
+- `fetch`
+- and `Promises`
+
+`fetch` has often replaced `XMLHttpRequestObject`s as the primary way to
+initiate requests to a remote server from JavaScript, although you still can use
+`XMLHttpRequestObject`s.
+
+We'll explore `Promises` a little bit later in this section and in great detail
+in later lessons.
 
 Let's learn to use `fetch()` to apply the AJAX technique: a way to load
 additional data _after_ information is presented to the user.
@@ -129,9 +133,9 @@ Fortunately, because fetch uses asynchronous JavaScript, it is considered
 _non-blocking_ - our code is free to move on to other tasks before our server
 gives us a response!
 
-For example, in the following code snippet, our `console.log` will run before
-the we receive a response back from the server (we'll see this in greater detail
-a little further down).
+For example, in the following code snippet, our `console.log` will run before we
+receive a response back from the server (we'll see this in greater detail a
+little further down).
 
 ```JavaScript
 fetch("https://anapioficeandfire.com/api/books")
@@ -257,7 +261,7 @@ fetch("https://anapioficeandfire.com/api/books")
 
 Just as our completed `.fetch` request will pass the response from our server to
 our first `.then` statement, our first `.then` statement will pass our parsed
-data to our second then statement!
+data to our second `.then` statement.
 
 ```JavaScript
 fetch("https://anapioficeandfire.com/api/books")
@@ -273,12 +277,12 @@ If you update the code in your `index.js` file, you should see the data we
 requested from our API being logged to our browser console!
 
 We now have access to the data we want to use from within this second `.then`
-statement! We can now pass it on to other functions that can then render that
+statement. We can now pass it on to other functions that can then render that
 information to our webpage, or complete some other operation using our data:
 
 ```JavaScript
 const renderData = (data) =>{
-  // render new HTML elements to display our fetched data
+  // perform DOM manipulation to display our fetched data
 }
 
 fetch("https://anapioficeandfire.com/api/books")
@@ -287,6 +291,11 @@ fetch("https://anapioficeandfire.com/api/books")
   renderData(data)
 })
 ```
+
+## GET Requests
+
+The type of `fetch` requests we've covered in this lesson has been running a
+`GET` request to our backend server.
 
 ## Working Around Backwards Compatibility Issues
 
