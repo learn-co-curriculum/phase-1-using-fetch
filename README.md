@@ -62,10 +62,10 @@ additional data _after_ information is presented to the user.
 ## Explain How to Fetch Data with `fetch()`
 
 The `fetch()` function retrieves data. It's a global _method_ on the `window`
-object, provided to JavaScript by browsers' web APIs. That means you can use it
+object, provided to JavaScript as a browser web API. That means you can use it
 simply by calling `fetch()` and passing in a path to a resource as an argument.
 To use the data that is returned by the `fetch()`, we need to chain on the
-`then()` method. We can see what this looks like below:
+`.then()` method. We can see what this looks like below:
 
 ```js
 fetch("string representing a URL to a data source")
@@ -91,7 +91,7 @@ servers send data to clients. This is the _request-response cycle_.
 
 `fetch` is used to initiate that request-response cycle from our client-side
 code to our servers. When we enter a Google search, for example, Google's
-client-side code initiates a `fetch` request.
+client-side code initiates a `fetch` request for the data we're searching for.
 
 We use `fetch` by passing it a URL that points toward the server we want to
 communicate with. We'll be mainly passing URLs pointing toward `localhost`
