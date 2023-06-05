@@ -39,7 +39,7 @@ In AJAX we:
 Originally, AJAX relied on several technologies:
 
 - `XMLHttpRequestObject`s
-- A [serialization format][sf] called JSON for "JavaScript Object Notation"
+- JSON
 - [asynchronous Input / Output][asyncio]
 - [the event loop][el]
 
@@ -100,6 +100,9 @@ want to work with - this [Game of Thrones](https://anapioficeandfire.com/) API,
 for example! When developing the Frontend for a Full Stack application, you'll
 pass `fetch` the URL to your backend API.
 
+We'll be using this API to play around with `fetch` during the rest of this
+lesson. Add the following code snippet to your `index.js` file!
+
 ```JavaScript
 fetch("https://anapioficeandfire.com/api/books")
 ```
@@ -140,7 +143,7 @@ little further down).
 ```JavaScript
 fetch("https://anapioficeandfire.com/api/books")
 
-console.log("I don't wait!")
+console.log("I don't wait!") // runs before the server has returned a response.
 ```
 
 ## Our First .then
@@ -161,8 +164,8 @@ A _Promise_ is a piece of data that JavaScript generates when it kicks off an
 asynchronous task. It's used to determine whether that asynchronous operation is
 still running, if it has completed, or if it failed.
 
-Try adding the following code to your `index.js` file and opening your
-`index.html` file in your browser:
+Try updating the code in your `index.js` file to the following code snippet.
+Then open your `index.html` file in your browser:
 
 ```JavaScript
 const myPromise = fetch("https://anapioficeandfire.com/api/books")
@@ -223,9 +226,12 @@ fetch("https://anapioficeandfire.com/api/books")
 ```
 
 If you add this code to your `index.js` file, you should see a new `Response`
-object logged to your browser console. If you expand it in the browser console,
-you should see that it contains several key/value pairs in it, including `type`,
-`body`, `status`, and `url`, among others.
+object logged to your browser console (you can comment out the previous code to
+if you'd like).
+
+If you expand this Response object in the browser console, you should see that
+it contains several key/value pairs in it, including `type`, `body`, `status`,
+and `url`, among others.
 
 Great! We've successfully made a request to our API and received a response back
 from our server! Now it's time to extract the data we want from our response.
@@ -283,10 +289,13 @@ information to our webpage, or complete some other operation using our data:
 ```JavaScript
 const renderData = (data) =>{
   // perform DOM manipulation to display our fetched data
+  // Feel free to write more code here!
 }
 
 fetch("https://anapioficeandfire.com/api/books")
-.then(response => response.json())
+.then(response => {
+  return response.json()
+})
 .then(data =>{
   renderData(data)
 })
@@ -296,6 +305,17 @@ fetch("https://anapioficeandfire.com/api/books")
 
 The type of `fetch` requests we've covered in this lesson has been running a
 `GET` request to our backend server.
+
+As discussed in previous lessons, an HTTP `GET` request is just a simple request
+from our Frontend to our Backend for data. 
+
+It doesn't require us to send any data from our Frontend to our Backend, nor do
+we need to include any specification of the type of HTTP request we're making -
+`fetch` makes a `GET` request by default when we pass it a URL as it's only
+argument!
+
+We'll learn about sending other types of HTTP requests using `fetch` in upcoming
+lessons.
 
 ## Working Around Backwards Compatibility Issues
 
