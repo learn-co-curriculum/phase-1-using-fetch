@@ -60,17 +60,21 @@ To use the data that is returned by the `fetch()`, we need to chain on the
 
 ```js
 fetch("string representing a URL to a data source")
-  .then(function (response) {
+  .then((response) => {
     return response.json();
   })
-  .then(function (data) {
+  .then((data) => {
     // Use the data from the response to do DOM manipulation
+  })
+  .catch((error) =>{
+    console.error(error)
   });
 ```
 
 When we write fetch requests in our JavaScript code, this is the form it will
-often take - one call to our `fetch` method, followed by two `.then` statements.
-Let's walk through each of these pieces of code step by step!
+often take - one call to our `fetch` method, followed by two `.then` statements
+and a `.catch` statement. Let's walk through each of these pieces of code step
+by step!
 
 ## Fetch Itself
 
@@ -168,8 +172,8 @@ const myPromise = fetch("https://anapioficeandfire.com/api/books")
 console.log(myPromise)
 ```
 
-If you have `index.html` open in your browser and you open up your browser console, you should see the following:
-`Promise {<pending>}`.
+If you have `index.html` open in your browser and you open up your browser
+console, you should see the following: `Promise {<pending>}`.
 
 Because our `fetch` request takes a while to complete, and because we want to
 move on to other tasks, it generates this `Promise` object for us, which we can
@@ -260,16 +264,17 @@ fetch("https://anapioficeandfire.com/api/books")
 
 Just as our completed `.fetch` request will pass the response from our server to
 our first `.then` statement, our first `.then` statement will pass our parsed
-data to our second `.then` statement. Keep in mind that we _do_ need to
-**_return_** our parsed data from the first `.then` statement in order for our
-second `.then` statement to receive it.
+data to our second `.then` statement.
+
+Keep in mind that we _do_ need to **_return_** our parsed data from the first
+`.then` statement in order for our second `.then` statement to receive it.
 
 ```JavaScript
 fetch("https://anapioficeandfire.com/api/books")
-.then(response => {
+.then((response) => {
   return response.json()
 })
-.then(data =>{
+.then((data) =>{
   console.log(data)
 })
 ```
@@ -284,7 +289,6 @@ information to our webpage, or complete some other operation using our data:
 ```JavaScript
 const renderData = (data) =>{
   // perform DOM manipulation to display our fetched data
-  // Feel free to write more code here!
 }
 
 fetch("https://anapioficeandfire.com/api/books")
@@ -295,6 +299,48 @@ fetch("https://anapioficeandfire.com/api/books")
   renderData(data)
 })
 ```
+
+## Our .catch Statement
+
+Unfortunately, things don't always work out the way we want them to when we
+write programs. (You might have experienced this phenomenon.)
+
+What if, for example, our server responds with an _error_ rather than with the
+data we wanted? If our code doesn't have any way to handle that error, it will
+break!
+
+This is where the `.catch` portion of a `fetch` statement comes in to play. If
+our server request results in an error, our `fetch` will bypass our `.then`
+statements and pass the error to the `.catch` statement.
+
+At that point, we can run some error handling logic, like updating the display
+to let a user know that an error occurred. Or, while we're developing our site,
+we could just print the error to the console to check out what went wrong:
+
+```JavaScript
+.catch((error) =>{
+  console.error(error)
+})
+```
+
+## All Together Again
+
+All together, this is what a complete `fetch` request will look like!
+
+```JavaScript
+const renderData = (data) =>{
+  // perform DOM manipulation to display our fetched data
+  // Feel free to write more code here!
+}
+
+fetch("https://anapioficeandfire.com/api/books")
+  .then(response => response.json())
+  .then(renderData)
+  .catch(console.error)
+```
+
+(Hey! The syntax in this example is different than the others! But it still
+works. Why...?)
 
 ## GET Requests
 
