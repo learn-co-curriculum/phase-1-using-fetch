@@ -161,7 +161,6 @@ asynchronous task. It's used to determine whether that asynchronous operation is
 still running, if it has completed, or if it failed.
 
 Try updating the code in your `index.js` file to the following code snippet.
-Then open your `index.html` file in your browser:
 
 ```JavaScript
 const myPromise = fetch("https://anapioficeandfire.com/api/books")
@@ -169,7 +168,7 @@ const myPromise = fetch("https://anapioficeandfire.com/api/books")
 console.log(myPromise)
 ```
 
-If you open up your browser console, you should see the following:
+If you have `index.html` open in your browser and you open up your browser console, you should see the following:
 `Promise {<pending>}`.
 
 Because our `fetch` request takes a while to complete, and because we want to
