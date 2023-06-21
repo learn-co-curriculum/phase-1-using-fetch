@@ -273,7 +273,7 @@ Keep in mind that we _do_ need to **_return_** our parsed data from the first
 fetch("https://anapioficeandfire.com/api/books")
 .then((response) => {
   return response.json();
-})
+});
 .then((data) =>{
   console.log(data);
 });
@@ -294,7 +294,7 @@ const renderData = (data) => {
 fetch("https://anapioficeandfire.com/api/books")
 .then(response => {
   return response.json();
-})
+});
 .then(data => {
   renderData(data);
 });
