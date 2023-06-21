@@ -90,16 +90,17 @@ client-side code initiates a `fetch` request (or something similar) for the data
 we're searching for.
 
 We use `fetch` by passing it a URL that points toward the server we want to
-communicate with. In this phase of the program, we'll be mainly passing URLs pointing toward `localhost`
-servers run by JSON Server, but we can pass it a URL pointing toward any API we
-want to work with — this [Game of Thrones](https://anapioficeandfire.com/) API,
-for example! When developing the front end for a Full Stack application, you'll
-pass `fetch` the URL to a back end API **you** create.
+communicate with. In this phase of the program, we'll be mainly passing URLs
+pointing toward `localhost` servers run by JSON Server, but we can pass it a URL
+pointing toward any API we want to work with — this [Game of
+Thrones](https://anapioficeandfire.com/) API, for example! When developing the
+front end for a Full Stack application, you'll pass `fetch` the URL to a back
+end API **you** create.
 
-We'll be using the Game of Thrones API to play around with `fetch` during the rest of this
-lesson. Add the code snippet below to your `index.js` file, then go ahead and
-open your `index.html` file in your browser. We won't see any output in
-our browser console yet, but we will be using it in later examples.
+We'll be using the Game of Thrones API to play around with `fetch` during the
+rest of this lesson. Add the code snippet below to your `index.js` file, then go
+ahead and open your `index.html` file in your browser. We won't see any output
+in our browser console yet, but we will be using it in later examples.
 
 ```JavaScript
 fetch("https://anapioficeandfire.com/api/books");
@@ -183,8 +184,8 @@ When Promises are first generated, they have a status of _pending_. That status
 can either resolve to _fulfilled_, if the operation is successful, or
 _rejected_, if the operation fails.
 
-Once our fetch is complete, assuming it's successful, the status of this Promise object will change to
-_fulfilled_.
+Once our fetch is complete, assuming it's successful, the status of this Promise
+object will change to _fulfilled_.
 
 Let's make the following modification to our code:
 
@@ -223,8 +224,8 @@ fetch("https://anapioficeandfire.com/api/books")
 ```
 
 If you add this code to your `index.js` file, you should see a new `Response`
-object logged to your browser console (you can comment out the previous code
-if you'd like).
+object logged to your browser console (you can comment out the previous code if
+you'd like).
 
 If you expand this Response object in the browser console, you should see that
 it contains several key/value pairs in it, including `type`, `body`, `status`,
@@ -339,20 +340,42 @@ fetch("https://anapioficeandfire.com/api/books")
   .catch(console.error);
 ```
 
-(Hey! The syntax in this example is different than the others! But it still
-works. Why...?)
+Hey! The syntax in this example is different than the others! But it still
+works. Why...?
+
+First, we're using a _single line arrow function_ within our first `.then`
+statement. Single line arrow functions use _implicit return_, which means
+they'll return whatever is on the right-hand side of the arrow. No more `return`
+keyword!
+
+Second, you'll notice that we've just written `renderData` and `console.error`
+within our second `.then` and our `.catch` statement. `.then` and `.catch`
+statements each take a callback function - we've just passed `renderData` and
+`console.error` as their respective callback functions!
+
+The second `.then` will pass the parsed response to its callback function - in
+this case, `renderData`. `renderData` will receive that parsed response and
+execute its code.
+
+Similarly, the `.catch` will pass an error to its callback function - in this
+case, `console.error`. `console.error` will receive that error, and print it out
+to our browser console!
+
+We recommend writing out your own code the long way first, as that will help
+with debugging. Then, once it's working, you can always refactor to use this
+short-form syntax.
 
 ## GET Requests
 
-The `fetch` requests we've covered in this lesson have been running a
-`GET` request to our back end server.
+The `fetch` requests we've covered in this lesson have been running a `GET`
+request to our back end server.
 
 As discussed in previous lessons, an HTTP `GET` request is just a simple request
 for data from our front end to our back end.
 
-It doesn't require us to send any data from our front end to our back end, nor do
-we need to include any specification of the type of HTTP request we're making —
-`fetch` makes a `GET` request by default when we pass it a URL as its only
+It doesn't require us to send any data from our front end to our back end, nor
+do we need to include any specification of the type of HTTP request we're making
+— `fetch` makes a `GET` request by default when we pass it a URL as its only
 argument!
 
 We'll learn about sending other types of HTTP requests using `fetch` in upcoming
@@ -375,10 +398,12 @@ research these other tools if you're interested!
 
 The AJAX technique opens up a lot of uses!
 
-- It allows us to pull in dynamic content. The browser can render the same HTML
-  page for a cooking website and update the recipe on display _without_
-  reloading the page. This approach was pioneered by GMail whose nav area is
-  swapped for mail content swiftly — thanks to AJAX.
+- It allows us to quickly update dynamic components within a larger web page.
+  The dynamic content can be pulled into the rendered HTML without reloading the
+  entire page. This approach was pioneered by Gmail. Thanks to AJAX, the email
+  list in Gmail is swapped for the contents of an individual email swiftly,
+  while all the surrounding elements (navigation, search bar, etc.) remain in
+  place.
 - It allows us to get data from multiple sources. We could make a website that
   displays the current weather forecast and the current price of bitcoin side by
   side! This approach is used by most sites to render ads. Your content loads
