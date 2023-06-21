@@ -8,7 +8,7 @@
 
 ## Setup
 
-This is a code along reading. Please fork and clone this reading down to your
+This is a code-along reading. Please fork and clone this reading down to your
 local computer before starting.
 
 ## Introduction
@@ -25,8 +25,8 @@ expect sites to load quickly **and** to stay updated. Research shows that 40
 percent of visitors to a website will leave if the site takes more than 3
 seconds to load. Mobile users are even _less_ patient.
 
-To solve this problem and help provide lots of other really great features, we
-developed a technique called **_AJAX_**. As mentioned at the beginning of this
+We can solve this problem and gain access to lots of other really great features
+by using a technique called **_AJAX_**. As mentioned at the beginning of this
 module, AJAX is short for _Asynchronous JavaScript and XML_ (although we'll be
 using JSON instead of XML).
 
@@ -36,7 +36,7 @@ In AJAX we:
    _quickly_
 2. _Then_ we use JavaScript to add more to the DOM, behind the scenes
 
-Current implementations of AJAX rely the following  technologies:
+Current implementations of AJAX rely on the following technologies:
 
 - `fetch`
 - `Promises`
@@ -81,7 +81,7 @@ by step!
 Let's start off with the `fetch` function itself. What's it doing? How are we
 using it?
 
-As we discussed in previous sections, clients request data from servers and
+As we discussed in previous lessons, clients request data from servers and
 servers send data to clients. This is the _request-response cycle_.
 
 `fetch` is used to initiate that request-response cycle from our client-side
@@ -90,19 +90,19 @@ client-side code initiates a `fetch` request (or something similar) for the data
 we're searching for.
 
 We use `fetch` by passing it a URL that points toward the server we want to
-communicate with. We'll be mainly passing URLs pointing toward `localhost`
+communicate with. In this phase of the program, we'll be mainly passing URLs pointing toward `localhost`
 servers run by JSON Server, but we can pass it a URL pointing toward any API we
-want to work with - this [Game of Thrones](https://anapioficeandfire.com/) API,
-for example! When developing the Frontend for a Full Stack application, you'll
-pass `fetch` the URL to your backend API.
+want to work with — this [Game of Thrones](https://anapioficeandfire.com/) API,
+for example! When developing the front end for a Full Stack application, you'll
+pass `fetch` the URL to a back end API **you** create.
 
-We'll be using this API to play around with `fetch` during the rest of this
-lesson. Add the following code snippet to your `index.js` file! Go ahead and
-open your `index.html` file in your browser as well - we won't see any output in
+We'll be using the Game of Thrones API to play around with `fetch` during the rest of this
+lesson. Add the code snippet below to your `index.js` file, then go ahead and
+open your `index.html` file in your browser. We won't see any output in
 our browser console yet, but we will be using it in later examples.
 
 ```JavaScript
-fetch("https://anapioficeandfire.com/api/books")
+fetch("https://anapioficeandfire.com/api/books");
 ```
 
 Congratulations! You've officially run your first fetch request!
@@ -117,7 +117,7 @@ while we wait for that operation to finish.
 `fetch` is a prime example of asynchronous code in JavaScript! It also
 demonstrates how useful asynchronous programming is.
 
-Think about making a web request - your computer is asking some remote server
+Think about making a web request — your computer is asking some remote server
 for some information. You might be thousands of miles away from the server!
 
 That server may then have to interact with a database to get the information
@@ -130,10 +130,10 @@ That's a lot to do, and it takes a long time!
 If our code had to wait for the server to respond with the data we're asking for
 before moving on to other tasks, it could really slow down the performance of
 our website. Code that halts other code from running is often called _blocking_
-code - it blocks our code's ability to move on to other tasks.
+code — it blocks our code's ability to move on to other tasks.
 
 Fortunately, because fetch uses asynchronous JavaScript, it is considered
-_non-blocking_ - our code is free to move on to other tasks before our server
+_non-blocking_ — our code is free to move on to other tasks before our server
 gives us a response!
 
 For example, in the following code snippet, our `console.log` will run before we
@@ -141,9 +141,9 @@ receive a response back from the server (we'll see this in greater detail a
 little further down).
 
 ```JavaScript
-fetch("https://anapioficeandfire.com/api/books")
+fetch("https://anapioficeandfire.com/api/books");
 
-console.log("I don't wait!") // runs before the server has returned a response.
+console.log("I don't wait!"); // runs before the server has returned a response.
 ```
 
 ## Our First .then
@@ -167,9 +167,9 @@ still running, if it has completed, or if it failed.
 Try updating the code in your `index.js` file to the following code snippet.
 
 ```JavaScript
-const myPromise = fetch("https://anapioficeandfire.com/api/books")
+const myPromise = fetch("https://anapioficeandfire.com/api/books");
 
-console.log(myPromise)
+console.log(myPromise);
 ```
 
 If you have `index.html` open in your browser and you open up your browser
@@ -183,19 +183,19 @@ When Promises are first generated, they have a status of _pending_. That status
 can either resolve to _fulfilled_, if the operation is successful, or
 _rejected_, if the operation fails.
 
-Once our fetch is complete, the status of this Promise object will change to
-_fufilled_.
+Once our fetch is complete, assuming it's successful, the status of this Promise object will change to
+_fulfilled_.
 
 Let's make the following modification to our code:
 
 ```JavaScript
-const myPromise = fetch("https://anapioficeandfire.com/api/books")
+const myPromise = fetch("https://anapioficeandfire.com/api/books");
 
-console.log(myPromise)
+console.log(myPromise);
 
 setTimeout(() =>{
-    console.log(myPromise)
-}, 1000)
+    console.log(myPromise);
+}, 1000);
 ```
 
 We should now see a new, additional log in our browser console: `Promise
@@ -218,12 +218,12 @@ an argument:
 ```JavaScript
 fetch("https://anapioficeandfire.com/api/books")
 .then(response => {
-  console.log(response)
-})
+  console.log(response);
+});
 ```
 
 If you add this code to your `index.js` file, you should see a new `Response`
-object logged to your browser console (you can comment out the previous code to
+object logged to your browser console (you can comment out the previous code
 if you'd like).
 
 If you expand this Response object in the browser console, you should see that
@@ -236,10 +236,10 @@ from our server! Now it's time to extract the data we want from our response.
 ### Parsing JSON
 
 When working with the response, we want to extract the data contained within the
-response's `body`. The `body` contains all the data we want from our server in
+response's `body`. The `body` contains all the data we want from the server in
 the form of JSON.
 
-We want to convert that data from JSON into actual JavaScript data structures -
+We want to convert that data from JSON into actual JavaScript data structures —
 arrays, objects, and so on.
 
 If you remember from previous lessons, JSON is technically just a string.
@@ -256,8 +256,8 @@ Let's include the `.json` method in our code!
 ```JavaScript
 fetch("https://anapioficeandfire.com/api/books")
 .then(response => {
-    return response.json()
-  })
+    return response.json();
+  });
 ```
 
 ## Our Second .then
@@ -272,11 +272,11 @@ Keep in mind that we _do_ need to **_return_** our parsed data from the first
 ```JavaScript
 fetch("https://anapioficeandfire.com/api/books")
 .then((response) => {
-  return response.json()
+  return response.json();
 })
 .then((data) =>{
-  console.log(data)
-})
+  console.log(data);
+});
 ```
 
 If you update the code in your `index.js` file, you should see the data we
@@ -287,17 +287,17 @@ statement. We can pass it on to other functions that can then render that
 information to our webpage, or complete some other operation using our data:
 
 ```JavaScript
-const renderData = (data) =>{
+const renderData = (data) => {
   // perform DOM manipulation to display our fetched data
 }
 
 fetch("https://anapioficeandfire.com/api/books")
 .then(response => {
-  return response.json()
+  return response.json();
 })
-.then(data =>{
-  renderData(data)
-})
+.then(data => {
+  renderData(data);
+});
 ```
 
 ## Our .catch Statement
@@ -309,7 +309,7 @@ What if, for example, our server responds with an _error_ rather than with the
 data we wanted? If our code doesn't have any way to handle that error, it will
 break!
 
-This is where the `.catch` portion of a `fetch` statement comes in to play. If
+This is where the `.catch` portion of a `fetch` statement comes into play. If
 our server request results in an error, our `fetch` will bypass our `.then`
 statements and pass the error to the `.catch` statement.
 
@@ -319,8 +319,8 @@ we could just print the error to the console to check out what went wrong:
 
 ```JavaScript
 .catch((error) =>{
-  console.error(error)
-})
+  console.error(error);
+});
 ```
 
 ## All Together Again
@@ -328,7 +328,7 @@ we could just print the error to the console to check out what went wrong:
 All together, this is what a complete `fetch` request will look like!
 
 ```JavaScript
-const renderData = (data) =>{
+const renderData = (data) => {
   // perform DOM manipulation to display our fetched data
   // Feel free to write more code here!
 }
@@ -336,7 +336,7 @@ const renderData = (data) =>{
 fetch("https://anapioficeandfire.com/api/books")
   .then(response => response.json())
   .then(renderData)
-  .catch(console.error)
+  .catch(console.error);
 ```
 
 (Hey! The syntax in this example is different than the others! But it still
@@ -344,15 +344,15 @@ works. Why...?)
 
 ## GET Requests
 
-The type of `fetch` requests we've covered in this lesson has been running a
-`GET` request to our backend server.
+The `fetch` requests we've covered in this lesson have been running a
+`GET` request to our back end server.
 
 As discussed in previous lessons, an HTTP `GET` request is just a simple request
-for data from our Frontend to our Backend .
+for data from our front end to our back end.
 
-It doesn't require us to send any data from our Frontend to our Backend, nor do
-we need to include any specification of the type of HTTP request we're making -
-`fetch` makes a `GET` request by default when we pass it a URL as it's only
+It doesn't require us to send any data from our front end to our back end, nor do
+we need to include any specification of the type of HTTP request we're making —
+`fetch` makes a `GET` request by default when we pass it a URL as its only
 argument!
 
 We'll learn about sending other types of HTTP requests using `fetch` in upcoming
@@ -369,7 +369,7 @@ code.
 
 These are all different tools that accomplish similar tasks as `fetch`. We'll be
 using `fetch` throughout the duration of the program, but you can and should
-research these older tools if you're interested!
+research these other tools if you're interested!
 
 ## Identify Examples of the AJAX Technique on Popular Websites
 
@@ -388,12 +388,12 @@ The AJAX technique opens up a lot of uses!
 ## Conclusion
 
 Many pages use AJAX to provide users fast and engaging sites. It's not always
-necessary - if you're building a static website, basic HTML could suffice.
+necessary — if you're building a static website, basic HTML could suffice.
 However, for any site that needs to request data from a server, the AJAX
 technique is a great tool to have.
 
 Using `fetch()`, we can include requests for data wherever we need to in our
-code. We can `fetch()` data on the click of a button,the expansion of an
+code. We can `fetch()` data on the click of a button, the expansion of an
 accordion display, or the submission of a form. There are many older methods for
 fetching data, but `fetch()` is the best option for new code.
 
