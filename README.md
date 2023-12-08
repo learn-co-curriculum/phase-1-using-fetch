@@ -6,22 +6,29 @@
 - Working around backwards compatibility issues
 - Identify examples of the AJAX technique on popular websites
 
+## Setup
+
+This is a code-along reading. Please fork and clone this reading down to your
+local computer before starting.
+
 ## Introduction
 
 When it comes to making engaging web sites, we often find ourselves needing to
 send a lot of data (text, images, media, etc.) so that the page is exciting.
 
-**But** browsers won't show anything until they've processed all of that
-data. As a result, they show nothing. The screen stays blank and users
-experience "waiting."
+**But** browsers won't show anything until they've processed all of that data.
+As a result, they show nothing. The screen stays blank and users experience
+"waiting."
 
 Too much waiting means visitors will click away and never come back. Web users
 expect sites to load quickly **and** to stay updated. Research shows that 40
 percent of visitors to a website will leave if the site takes more than 3
 seconds to load. Mobile users are even _less_ patient.
 
-To solve this problem and help provide lots of other really great features, we
-developed a technique called **_AJAX_**.
+We can solve this problem and gain access to lots of other really great features
+by using a technique called **_AJAX_**. As mentioned at the beginning of this
+module, AJAX is short for _Asynchronous JavaScript and XML_ (although we'll be
+using JSON instead of XML).
 
 In AJAX we:
 
@@ -29,193 +36,374 @@ In AJAX we:
    _quickly_
 2. _Then_ we use JavaScript to add more to the DOM, behind the scenes
 
-AJAX relies on several technologies:
+Current implementations of AJAX rely on the following technologies:
 
-- Things called `Promise`s
-- Things called `XMLHttpRequestObject`s
-- A [serialization format][sf] called JSON for "JavaScript Object Notation"
+- `fetch`
+- `Promises`
+- `JSON`
 - [asynchronous Input / Output][asyncio]
 - [the event loop][el]
 
-Part of what makes AJAX complicated to learn is that to understand it
-_thoroughly_, you need to understand _all_ these components. For the moment,
-however, we're going to gloss over all these pieces in this lesson. It just so
-happens that modern browsers have _abstracted_ all those components into a
-single function called `fetch()`. While someone interviewing to be a front-end
-developer will be expected to be able to explain all those components above
-(which we _will_ cover later), while we're getting the hang of things, we're
-going to simplify our task by using `fetch()`.
-
-Let's learn to use `fetch()` to apply the AJAX technique: a way to load
-additional data _after_ information is presented to the user.
+In this reading and in the following readings and labs, we'll be learning about
+all of these topics and how we can implement them in our code to make dynamic,
+efficient, and user-friendly websites.
 
 ## Explain How to Fetch Data with `fetch()`
 
-The `fetch()` function retrieves data. It's a global _method_ on the `window`
-object. That means you can use it simply by calling `fetch()` and passing in a
-path to a resource as an argument. To use the data that is returned by the
-`fetch()`, we need to chain on the `then()` method. We can see what this looks
-like below:
+The `fetch` function retrieves data. It's a global _method_ on the `window`
+object, provided to JavaScript as a browser web API. That means you can use it
+simply by calling `fetch()` anywhere in your code and passing in a path to a
+resource as an argument.
+
+To use the data that is returned by the `fetch()`, we need to chain on the
+`.then()` method. We can see what this looks like below:
 
 ```js
 fetch("string representing a URL to a data source")
-  .then(function (response) {
+  .then((response) => {
     return response.json();
   })
-  .then(function (data) {
+  .then((data) => {
     // Use the data from the response to do DOM manipulation
-  });
-```
-
-Now let's add some multi-line (`/*...*/`) comments (which JavaScript will
-ignore) to describe what's happening:
-
-```js
-/*
-  Here we are calling `fetch()` and passing a URL to a data source as the
-  argument. The function call returns a Promise object that represents what the data
-  source sent back. It does *not* return the actual content. (More about this
-  later.)
-*/
-fetch("string representing a URL to a data source")
-  /*
-    Next, we call the `then()` method on the Promise object returned by calling
-    `fetch()`. `then()` takes one argument: a callback function. 
-    (More on Promises later!)
-    
-    Inside the callback function, we do whatever processing we need on the
-    object, in this case, converting it from JSON using the built-in `json()`
-    method. (Another commonly-used method is `text()`, which will convert the
-    response into plain text.) The `json()` method returns a Promise, which we
-    return from our callback function.
-    
-    Note that we *have to return* the content that we've gotten out of the
-    response and converted from JSON in order to use the data in the next then()
-    method call.
-
-    This first callback function is usually only one line: returning the 
-    content from the response after converting it into the format we need.
-  */
-  .then(function (response) {
-    return response.json();
   })
-  /*
-    This time, the `then()` method is receiving the object that we returned from the
-    first call to `then()` (our parsed JSON object). We capture the object in the
-    parameter `data` and pass it into a second callback function, where we will
-    write code to do DOM manipulation using the data returned from the server
-  */
-  .then(function (data) {
-    // Use the actual data to do DOM manipulation
+  .catch((error) =>{
+    console.error(error)
   });
 ```
 
-> **Top Tip:** As always, we can name the parameters being used in our callback
-> functions anything we like, but you will often see `response` (or `resp`) and
-> `data` used.
+When we write fetch requests in our JavaScript code, this is the form it will
+often take - one call to our `fetch` method, followed by two `.then` statements
+and a `.catch` statement. Let's walk through each of these pieces of code step
+by step!
 
-### Filling Out the Example
+## Fetch Itself
 
-Let's fill out our base skeleton.
+Let's start off with the `fetch` function itself. What's it doing? How are we
+using it?
 
-First, we'll provide a `String` argument to `fetch()`. As it happens,
-`http://api.open-notify.org/astros.json` will provide a list of the humans in
-space. You can paste this URL into a browser tab and see that the data uses a
-JSON structure.
+As we discussed in previous lessons, clients request data from servers and
+servers send data to clients. This is the _request-response cycle_.
 
-JSON is a way to send a collection of data in the internet, formatted as a
-`String`. It just so happens that this string is written in a way that would be
-valid JavaScript syntax for an `Object` instance. Thus the name "JavaScript
-Object Notation", or JSON ("jay-sawn"). Programmers find it very easy to think
-about JavaScript `Object`s, so they often send "stringified" versions of
-`Object`s as responses.
+`fetch` is used to initiate that request-response cycle from our client-side
+code to our servers. When we enter a Google search, for example, Google's
+client-side code initiates a `fetch` request (or something similar) for the data
+we're searching for.
 
-The `then()` method takes a callback function as an argument. Here is where you
-tell JavaScript to parse the network response, which is formatted as a special
-JSON string, into actual JavaScript objects. When you first start using
-`fetch()`, most of your first `then()`s are going have a callback function that
-looks like this:
+We use `fetch` by passing it a URL that points toward the server we want to
+communicate with. In this phase of the program, we'll be mainly passing URLs
+pointing toward `localhost` servers run by JSON Server, but we can pass it a URL
+pointing toward any API we want to work with — this [Game of
+Thrones](https://anapioficeandfire.com/) API, for example! When developing the
+front end for a Full Stack application, you'll pass `fetch` the URL to a back
+end API **you** create.
 
-```js
-function(response) {
-  // take the response, which is a JSON-formatted **string**,
-  // and parse it into an actual JavaScript **object**
+We'll be using the Game of Thrones API to play around with `fetch` during the
+rest of this lesson. Add the code snippet below to your `index.js` file, then go
+ahead and open your `index.html` file in your browser. We won't see any output
+in our browser console yet, but we will be using it in later examples.
+
+```JavaScript
+fetch("https://anapioficeandfire.com/api/books");
+```
+
+Congratulations! You've officially run your first fetch request!
+
+### Fetch is Asynchronous
+
+We discussed JavaScript's asynchronous abilities in some of our previous
+lessons. As a brief refresher, _asynchronous_ code is code that allows us to
+start an operation in our code, then switch to running other pieces of code
+while we wait for that operation to finish.
+
+`fetch` is a prime example of asynchronous code in JavaScript! It also
+demonstrates how useful asynchronous programming is.
+
+Think about making a web request — your computer is asking some remote server
+for some information. You might be thousands of miles away from the server!
+
+That server may then have to interact with a database to get the information
+you've requested. Once the database has finished looking for the appropriate
+data and giving it to the server, the server then has to send that data all the
+way back to you.
+
+That's a lot to do, and it takes a long time!
+
+If our code had to wait for the server to respond with the data we're asking for
+before moving on to other tasks, it could really slow down the performance of
+our website. Code that halts other code from running is often called _blocking_
+code — it blocks our code's ability to move on to other tasks.
+
+Fortunately, because fetch uses asynchronous JavaScript, it is considered
+_non-blocking_ — our code is free to move on to other tasks before our server
+gives us a response!
+
+For example, in the following code snippet, our `console.log` will run before we
+receive a response back from the server (we'll see this in greater detail a
+little further down).
+
+```JavaScript
+fetch("https://anapioficeandfire.com/api/books");
+
+console.log("I don't wait!"); // runs before the server has returned a response.
+```
+
+## Our First .then
+
+Ok, so we can keep doing stuff while waiting for our server to respond - neat.
+
+But what about code that we want to run _after_ our server responds? What about
+code that's supposed to actually _use_ that data? That's where our `.then`
+statements come in.
+
+### Promises
+
+We're going to talk about this in more detail in a later section, but in order
+to understand how `fetch` and `.then` statements work together, we need to talk
+a little bit about _Promises_.
+
+A _Promise_ is a piece of data that JavaScript generates when it kicks off an
+asynchronous task. It's used to determine whether that asynchronous operation is
+still running, if it has completed, or if it failed.
+
+Try updating the code in your `index.js` file to the following code snippet.
+
+```JavaScript
+const myPromise = fetch("https://anapioficeandfire.com/api/books");
+
+console.log(myPromise);
+```
+
+If you have `index.html` open in your browser and you open up your browser
+console, you should see the following: `Promise {<pending>}`.
+
+Because our `fetch` request takes a while to complete, and because we want to
+move on to other tasks, it generates this `Promise` object for us, which we can
+use to determine when the fetch request finishes.
+
+When Promises are first generated, they have a status of _pending_. That status
+can either resolve to _fulfilled_, if the operation is successful, or
+_rejected_, if the operation fails.
+
+Once our fetch is complete, assuming it's successful, the status of this Promise
+object will change to _fulfilled_.
+
+Let's make the following modification to our code:
+
+```JavaScript
+const myPromise = fetch("https://anapioficeandfire.com/api/books");
+
+console.log(myPromise);
+
+setTimeout(() =>{
+    console.log(myPromise);
+}, 1000);
+```
+
+We should now see a new, additional log in our browser console: `Promise
+{<fulfilled>: Response}`. (If you don't see it, try increasing the time interval
+in setTimeout.)
+
+### Waiting for a Fulfilled Promise
+
+Our `.then` statements are designed to wait for the Promise generated by `fetch`
+to be fulfilled. In other words, it waits until we've received the response back
+from our server.
+
+In order to give each `.then` statement some code to run once the Promise has
+been fulfilled, we need to pass each `.then` statement a _callback function_.
+
+In the case of our `.fetch`, this callback function will run once our server has
+sent back the response. It will also be _passed_ the response from the server as
+an argument:
+
+```JavaScript
+fetch("https://anapioficeandfire.com/api/books")
+.then(response => {
+  console.log(response);
+});
+```
+
+If you add this code to your `index.js` file, you should see a new `Response`
+object logged to your browser console (you can comment out the previous code if
+you'd like).
+
+If you expand this Response object in the browser console, you should see that
+it contains several key/value pairs in it, including `type`, `body`, `status`,
+and `url`, among others.
+
+Great! We've successfully made a request to our API and received a response back
+from our server! Now it's time to extract the data we want from our response.
+
+### Parsing JSON
+
+When working with the response, we want to extract the data contained within the
+response's `body`. The `body` contains all the data we want from the server in
+the form of JSON.
+
+We want to convert that data from JSON into actual JavaScript data structures —
+arrays, objects, and so on.
+
+If you remember from previous lessons, JSON is technically just a string.
+Strings are great for sending data between clients and servers, but they are
+hard to work with when we want to interact with data in our JavaScript code.
+
+Fortunately, we can use the built-in `.json` method to convert JSON into the
+data structures we want! The `.json` method _parses_ JSON, which means it goes
+through the JSON string and converts the symbols in JSON into actual JavaScript
+data structures.
+
+Let's include the `.json` method in our code!
+
+```JavaScript
+fetch("https://anapioficeandfire.com/api/books")
+.then(response => {
+    return response.json();
+  });
+```
+
+## Our Second .then
+
+Just as our completed `.fetch` request will pass the response from our server to
+our first `.then` statement, our first `.then` statement will pass our parsed
+data to our second `.then` statement.
+
+Keep in mind that we _do_ need to **_return_** our parsed data from the first
+`.then` statement in order for our second `.then` statement to receive it.
+
+```JavaScript
+fetch("https://anapioficeandfire.com/api/books")
+.then((response) => {
   return response.json();
+});
+.then((data) =>{
+  console.log(data);
+});
+```
+
+If you update the code in your `index.js` file, you should see the data we
+requested from our API being logged to our browser console!
+
+We now have access to the data we want to use from within this second `.then`
+statement. We can pass it on to other functions that can then render that
+information to our webpage, or complete some other operation using our data:
+
+```JavaScript
+const renderData = (data) => {
+  // perform DOM manipulation to display our fetched data
 }
+
+fetch("https://anapioficeandfire.com/api/books")
+.then(response => {
+  return response.json();
+});
+.then(data => {
+  renderData(data);
+});
 ```
 
-The final `then()` is when you actually get some data (the parsed object
-returned from the first `then()`) passed in. You can then do something with that
-data. The easiest options are:
+## Our .catch Statement
 
-- `alert()` the data
-- `console.log()` the data
-- hand the data off to another function.
+Unfortunately, things don't always work out the way we want them to when we
+write programs. (You might have experienced this phenomenon.)
 
-We'll go for the `console.log()` approach:
+What if, for example, our server responds with an _error_ rather than with the
+data we wanted? If our code doesn't have any way to handle that error, it will
+break!
 
-```js
-function(data) {
-  console.log(data)
+This is where the `.catch` portion of a `fetch` statement comes into play. If
+our server request results in an error, our `fetch` will bypass our `.then`
+statements and pass the error to the `.catch` statement.
+
+At that point, we can run some error handling logic, like updating the display
+to let a user know that an error occurred. Or, while we're developing our site,
+we could just print the error to the console to check out what went wrong:
+
+```JavaScript
+.catch((error) =>{
+  console.error(error);
+});
+```
+
+## All Together Again
+
+All together, this is what a complete `fetch` request will look like!
+
+```JavaScript
+const renderData = (data) => {
+  // perform DOM manipulation to display our fetched data
+  // Feel free to write more code here!
 }
+
+fetch("https://anapioficeandfire.com/api/books")
+  .then(response => response.json())
+  .then(renderData)
+  .catch(console.error);
 ```
 
-> **STRETCH:** But you _should_ be able to imagine that you could do some DOM
-> manipulation instead.
+Hey! The syntax in this example is different than the others! But it still
+works. Why...?
 
-Here's a completed example:
+First, we're using a _single line arrow function_ within our first `.then`
+statement. Single line arrow functions use _implicit return_, which means
+they'll return whatever is on the right-hand side of the arrow. No more `return`
+keyword!
 
-```js
-fetch("http://api.open-notify.org/astros.json")
-  .then(function (response) {
-    console.log(response);
-    return response.json();
-  })
-  .then(function (data) {
-    console.log(data);
-  });
-```
+Second, you'll notice that we've just written `renderData` and `console.error`
+within our second `.then` and our `.catch` statement. `.then` and `.catch`
+statements each take a callback function - we've just passed `renderData` and
+`console.error` as their respective callback functions!
 
-Let's perform a demonstration. Navigate to
-[http://open-notify.org](http://open-notify.org) in an **incognito** tab. We
-need to go incognito to make sure that none of your browsing history interferes
-with this experiment.
+The second `.then` will pass the parsed response to its callback function - in
+this case, `renderData`. `renderData` will receive that parsed response and
+execute its code.
 
-Open up DevTools and paste the following into the console:
+Similarly, the `.catch` will pass an error to its callback function - in this
+case, `console.error`. `console.error` will receive that error, and print it out
+to our browser console!
 
-```js
-fetch("http://api.open-notify.org/astros.json")
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (data) {
-    console.log(data);
-    console.log(`Holy cow! There are ${data["number"]} humans in space.`);
-  });
-```
+We recommend writing out your own code the long way first, as that will help
+with debugging. Then, once it's working, you can always refactor to use this
+short-form syntax.
 
-![Simple fetch()](https://curriculum-content.s3.amazonaws.com/skills-front-end-web-development/js-async-fetch-readme/simple_fetch_incog_window.png)
+## GET Requests
 
-You might notice in the DevTools console that this chained method call returned
-a `Promise`. We'll cover that later.
+The `fetch` requests we've covered in this lesson have been running a `GET`
+request to our back end server.
+
+As discussed in previous lessons, an HTTP `GET` request is just a simple request
+for data from our front end to our back end.
+
+It doesn't require us to send any data from our front end to our back end, nor
+do we need to include any specification of the type of HTTP request we're making
+— `fetch` makes a `GET` request by default when we pass it a URL as its only
+argument!
+
+We'll learn about sending other types of HTTP requests using `fetch` in upcoming
+lessons.
 
 ## Working Around Backwards Compatibility Issues
 
-As you can see, `fetch()` provides us with a short way to fetch and work with
-resources. In older code you might see `jquery.ajax` or `$.ajax` or an object
-called an `XMLHttpRequestObject`. You might also see libraries like `axios` used
-in newer code. These are distractions at this point in your education. After
-working with `fetch()` you'll be able to more easily integrate these special
-topics.
+As you can see, `fetch()` provides us with a quick and easy way to request data
+from our server within our client-side code.
+
+In older code you might see `jquery.ajax` or `$.ajax` or an object called an
+`XMLHttpRequestObject`. You might also see libraries like `axios` used in newer
+code.
+
+These are all different tools that accomplish similar tasks as `fetch`. We'll be
+using `fetch` throughout the duration of the program, but you can and should
+research these other tools if you're interested!
 
 ## Identify Examples of the AJAX Technique on Popular Websites
 
 The AJAX technique opens up a lot of uses!
 
-- It allows us to pull in dynamic content. The same "framing" HTML page remains
-  on screen for a cooking website. The recipe on display updates _without_ page
-  load. This approach was pioneered by GMail whose nav area is swapped for mail
-  content swiftly — thanks to AJAX.
+- It allows us to quickly update dynamic components within a larger web page.
+  The dynamic content can be pulled into the rendered HTML without reloading the
+  entire page. This approach was pioneered by Gmail. Thanks to AJAX, the email
+  list in Gmail is swapped for the contents of an individual email swiftly,
+  while all the surrounding elements (navigation, search bar, etc.) remain in
+  place.
 - It allows us to get data from multiple sources. We could make a website that
   displays the current weather forecast and the current price of bitcoin side by
   side! This approach is used by most sites to render ads. Your content loads
@@ -224,15 +412,15 @@ The AJAX technique opens up a lot of uses!
 
 ## Conclusion
 
-Many pages use AJAX to provide users fast and engaging sites. It's certainly not
-required in all sites. In fact, using it could be a step backward if simple HTML
-would suffice. However, as sites have more and more material, the AJAX technique
-is a great tool to have.
+Many pages use AJAX to provide users fast and engaging sites. It's not always
+necessary — if you're building a static website, basic HTML could suffice.
+However, for any site that needs to request data from a server, the AJAX
+technique is a great tool to have.
 
 Using `fetch()`, we can include requests for data wherever we need to in our
-code. We can `fetch()` data on the click of a button or the expansion of an
-accordion display. There are many older methods for fetching data, but `fetch()`
-is the future.
+code. We can `fetch()` data on the click of a button, the expansion of an
+accordion display, or the submission of a form. There are many older methods for
+fetching data, but `fetch()` is the best option for new code.
 
 ## Resources
 
