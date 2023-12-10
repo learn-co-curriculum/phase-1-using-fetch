@@ -133,7 +133,7 @@ about JavaScript `Object`s, so they often send "stringified" versions of
 The `then()` method takes a callback function as an argument. Here is where you
 tell JavaScript to parse the network response, which is formatted as a special
 JSON string, into actual JavaScript objects. When you first start using
-`fetch()`, most of your first `then()`s are going have a callback function that
+`fetch()`, most of your first `then()`s are going to have a callback function that
 looks like this:
 
 ```js
